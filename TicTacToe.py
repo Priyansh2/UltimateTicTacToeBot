@@ -180,9 +180,9 @@ def minimax(player,game,firstcall,depth,alpha,beta,selected_block):
             print i,j
         return scores[min_score]
 
-previous_move_x,previous_move_y = map(int,raw_input().split()) #Input where the last move was made (0,9) in x and (0,9) in y
-if previous_move_x==-1 and previous_move_y==-1:
+previous_move_r,previous_move_c = map(int,raw_input().split()) #Input where the last move was made (0,9) in x and (0,9) in y
+if previous_move_c==-1 and previous_move_r==-1:
     selected_block=-1
 else:
-    selected_block = ((previous_move_x)%3+((previous_move_y)%3)*3) #x is the column y is the row
+    selected_block = ((previous_move_c)%3+((previous_move_r)%3)*3) #x is the column y is the row
 minimax(1,initial,0,0,-INF,INF,selected_block)
