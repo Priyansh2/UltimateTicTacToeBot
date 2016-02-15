@@ -11,6 +11,8 @@
 """
 from copy import deepcopy
 
+INF = 100000000
+
 with open('currentstate') as f:
     initial = [[int(x) for x in line.split()] for line in f]
 
@@ -56,13 +58,21 @@ def assumedScore(game,depth,player):
         return -captured
 
 
-def minimax(player,game,firstcall,depth):
+def minimax(player,game,firstcall,depth,alpha,beta):
+
+    if alpha>beta:
+        if player==1:
+            #Parent is minimizer
+            return INF
+        else:
+            #Parent is maximizer
+            return -INF
     #The game is complete (All blocks filled) or if there is a winner of the game, then return the actual cost function values
     if win(1,game) or win(2,game) or completed(game):    
         return score(game,depth)
 
     #The game is not complete or no one has won yet, we use our heuristic to compute the estimated cost function values
-    if depth>=4:
+    if depth>=6:
         return assumedScore(game,depth,player)
 
     scores = []
@@ -74,9 +84,13 @@ def minimax(player,game,firstcall,depth):
             if copy[i][j]==0:
                 copy[i][j]=player
                 if player==1:
-                    scores.append(minimax(2,copy,1,depth+1))
+                    cur_score = minimax(2,copy,1,depth+1,alpha,beta)
+                    scores.append(cur_score)
+                    alpha = max(alpha, cur_score)
                 else:
-                    scores.append(minimax(1,copy,1,depth+1))
+                    cur_score = minimax(1,copy,1,depth+1,alpha,beta)
+                    scores.append(cur_score)
+                    beta = min(beta, cur_score)
                 copy[i][j]=0
                 moves.append((i+1)*10+(j+1))
     
@@ -96,4 +110,4 @@ def minimax(player,game,firstcall,depth):
             print i,j
         return scores[min_score]
 
-minimax(1,initial,0,0)
+minimax(1,initial,0,0,-INF,INF)
