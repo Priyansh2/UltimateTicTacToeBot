@@ -27,18 +27,6 @@ def win(player,game):
             return 1
     return 0
 
-#HEURISTIC
-def assumedScore(game,depth,player):
-    captured=0
-    for i in range(0,3):
-        for j in range(0,3):
-            if game[i][j]==player:
-                captured+=1
-    if player==1:
-        return captured
-    else:
-        return -captured
-
 def score(game,depth):
     if win(1,game):
         return 15-depth
@@ -54,11 +42,27 @@ def completed(game):
                 return 0
     return 1
 
+
+#HEURISTIC
+def assumedScore(game,depth,player):
+    captured=0
+    for i in range(0,3):
+        for j in range(0,3):
+            if game[i][j]==player:
+                captured+=1
+    if player==1:
+        return captured
+    else:
+        return -captured
+
+
 def minimax(player,game,firstcall,depth):
-    if score(game,depth)!=0 or completed(game):    
+    #The game is complete (All blocks filled) or if there is a winner of the game, then return the actual cost function values
+    if win(1,game) or win(2,game) or completed(game):    
         return score(game,depth)
 
-    if depth>=2:
+    #The game is not complete or no one has won yet, we use our heuristic to compute the estimated cost function values
+    if depth>=4:
         return assumedScore(game,depth,player)
 
     scores = []
