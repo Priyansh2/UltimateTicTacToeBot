@@ -149,18 +149,21 @@ def minimax(player,game,firstcall,depth,alpha,beta,selected_block):
             for j in range(0,3):
                 available[i][j]=1
     
+    alphatemp = deepcopy(alpha)
+    betatemp = deepcopy(beta)
+
     for i in range(0,9):
         for j in range(0,9):
             if copy[i][j]==0 and available[i/3][j/3]==1:
                 copy[i][j]=player
                 if player==1:
-                    cur_score = minimax(2,copy,1,depth+1,alpha,beta,(i%3)*3+j%3)
+                    cur_score = minimax(2,copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3)
                     scores.append(cur_score)
-                    alpha = max(alpha, cur_score)
+                    alphatemp = max(alphatemp, cur_score)
                 else:
-                    cur_score = minimax(1,copy,1,depth+1,alpha,beta,(i%3)*3+j%3)
+                    cur_score = minimax(1,copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3)
                     scores.append(cur_score)
-                    beta = min(beta, cur_score)
+                    betatemp = min(betatemp, cur_score)
                 copy[i][j]=0
                 moves.append((i)*10+(j))
     
