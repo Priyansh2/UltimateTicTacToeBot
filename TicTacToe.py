@@ -27,14 +27,14 @@ class Player76:
         for i in range(0,3):
             for j in range(0,3):
                 blocks[i][j]=self.block_win(player,game,i,j)
-        if blocks[0][0]==player and blocks[1][1]==player and blocks[2][2]==player:
+        if blocks[0][0]==1 and blocks[1][1]==1 and blocks[2][2]==1:
             return 1
-        if blocks[0][2]==player and blocks[1][1]==player and blocks[2][0]==player:
+        if blocks[0][2]==1 and blocks[1][1]==1 and blocks[2][0]==1:
             return 1
         for i in range(0,3):
-            if blocks[i][0]==player and blocks[i][1]==player and blocks[i][2]==player:
+            if blocks[i][0]==1 and blocks[i][1]==1 and blocks[i][2]==1:
                 return 1
-            if blocks[0][i]==player and blocks[1][i]==player and blocks[2][i]==player:
+            if blocks[0][i]==1 and blocks[1][i]==1 and blocks[2][i]==1:
                 return 1
         return 0
 
@@ -205,7 +205,7 @@ class Player76:
                 #Parent is maximizer
                 return -INF
         #The game is complete (All blocks filled) or if there is a winner of the game, then return the heruistic based cost function values
-        if self.board_win(1,game) or self.board_win(2,game) or self.completed_board(game) or depth>=4:    
+        if self.board_win('o',game) or self.board_win('x',game) or self.completed_board(game) or depth>=4: 
             return self.assumedScore(game,depth,player,flag)
 
         scores = []
@@ -280,8 +280,6 @@ class Player76:
                     if not self.completed_block(copy,i,j):
                         available[i][j]=1
       
-        #if firstcall==0:
-        #	print available
         alphatemp = deepcopy(alpha)
         betatemp = deepcopy(beta)
 

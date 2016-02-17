@@ -16,6 +16,7 @@ In case of any queries, please post on moodle.iiit.ac.in
 import sys
 import random
 import signal
+import time
 from TicTacToe import Player76
 
 def handler(signum, frame):
@@ -297,6 +298,7 @@ def simulate(obj1,obj2):
 	WINNER = ''
 	MESSAGE = ''
 	TIMEALLOWED = 12000
+        t0 = time.clock()
 	p1_pts=0
 	p2_pts=0
 
@@ -353,6 +355,8 @@ def simulate(obj1,obj2):
         	try:
            		ret_move_pl2 = pl2.move(temp_board_state, temp_block_stat, old_move, pl2_fl)
         	except:
+                        t1 = time.clock()
+                        print t1-t0
 			WINNER, MESSAGE = decide_winner_and_get_message('P2', 'L',   'TIMED OUT')
 			break
         	signal.alarm(0)
