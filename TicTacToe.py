@@ -306,14 +306,14 @@ class Player76:
             j=(moves[max_score])%10
             i=(moves[max_score]/10)%10
             if firstcall==0:
-                return (int(i+1),int(j+1))
+                return (int(i),int(j))
             return scores[max_score]
         else:
             min_score = scores.index(min(scores))
             j=(moves[min_score])%10
             i=(moves[min_score]/10)%10
             if firstcall==0:
-                return (int(i+1),int(j+1))
+                return (int(i),int(j))
             return scores[min_score]
 
     def move(self, temp_board, temp_block, old_move, flag):
@@ -321,5 +321,5 @@ class Player76:
     	if previous_move_c==-1 and previous_move_r==-1:
     	    selected_block=-1
     	else:
-    	    selected_block = ((previous_move_c-1)%3+((previous_move_r-1)%3)*3) #x is the column y is the row
+    	    selected_block = ((previous_move_c)%3+((previous_move_r)%3)*3) #x is the column y is the row
     	return self.minimax(flag,temp_board,0,0,-INF,INF,selected_block,flag)
