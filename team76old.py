@@ -3,13 +3,10 @@
 # vim:fenc=utf-8
 
 from copy import deepcopy
-import time
 
 INF = 1000000000
-t0 = 0
-complete = False
 
-class Player76:
+class Player76old:
 
     def block_win(self,player,game,base1,base2):
         base1*=3
@@ -44,7 +41,7 @@ class Player76:
     def completed_board(self,game):
         for i in range(0,9):
             for j in range(0,9):
-                if game[i][j]=='-' and self.block_win('x',game,i/3,j/3)==0 and self.block_win('o',game,i/3,j/3)==0:
+                if game[i][j]=='-':
                     return 0
         return 1
 
@@ -198,13 +195,8 @@ class Player76:
         else:
             return -final_score
 
-    def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth):
+    def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag):
 
-        global t0
-        global complete
-        if time.clock() - t0 >=9:
-            complete = False
-            return self.assumedScore(game,depth,player,flag)
         if alpha>beta:
             if player==flag:
                 #Parent is minimizer
@@ -213,7 +205,7 @@ class Player76:
                 #Parent is maximizer
                 return -INF
         #The game is complete (All blocks filled) or if there is a winner of the game, then return the heruistic based cost function values
-        if self.board_win('o',game) or self.board_win('x',game) or self.completed_board(game) or depth>=maxdepth: 
+        if self.board_win('o',game) or self.board_win('x',game) or self.completed_board(game) or depth>=4: 
             return self.assumedScore(game,depth,player,flag)
 
         scores = []
@@ -296,11 +288,11 @@ class Player76:
                 if copy[i][j]=='-' and available[i/3][j/3]==1:
                     copy[i][j]=player
                     if player==flag:
-                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag)
                         scores.append(cur_score)
                         alphatemp = max(alphatemp, cur_score)
                     else:
-                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag)
                         scores.append(cur_score)
                         betatemp = min(betatemp, cur_score)
                     copy[i][j]='-'
@@ -323,26 +315,9 @@ class Player76:
             return scores[min_score]
 
     def move(self, temp_board, temp_block, old_move, flag):
-        global t0
-        global complete
-        t0 = time.clock()
-        previous_move_r, previous_move_c = old_move[0], old_move[1]
+    	previous_move_r, previous_move_c = old_move[0], old_move[1]
     	if previous_move_c==-1 and previous_move_r==-1:
     	    selected_block=-1
     	else:
     	    selected_block = ((previous_move_c)%3+((previous_move_r)%3)*3) #x is the column y is the row
-        complete = True
-        answer = self.minimax(flag,temp_board,0,0,-INF,INF,selected_block,flag,4)
-        t1 = time.clock()
-        max_depth = 5
-        while t1-t0 <= 8:
-            complete = True
-            answer1 = self.minimax(flag,temp_board,0,0,-INF,INF,selected_block,flag,max_depth)
-            if complete == True:
-                answer = answer1
-                max_depth += 1
-                t1 = time.clock()
-            else:
-                break
-        return answer
-
+    	return self.minimax(flag,temp_board,0,0,-INF,INF,selected_block,flag)
