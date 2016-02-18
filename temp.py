@@ -1,4 +1,4 @@
-from TicTacToe import Player76
+from team76 import Player76
 
 obj1 = Player76()
 

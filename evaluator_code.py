@@ -17,7 +17,8 @@ import sys
 import random
 import signal
 import time
-from TicTacToe import Player76
+from team76 import Player76
+from team45 import Player45
 
 def handler(signum, frame):
     #print 'Signal handler called with signal', signum
@@ -29,10 +30,10 @@ class ManualPlayer:
 		pass
 	def move(self, temp_board, temp_block, old_move, flag):
 		print 'Enter your move: <format:row column> (you\'re playing with', flag + ")"	
-		obj1 = Player76()
-                mvp = obj1.move(temp_board,temp_block,old_move,flag)
-                #mvp = raw_input()
-		#mvp = mvp.split()
+		#obj1 = Player76()
+                #mvp = obj1.move(temp_board,temp_block,old_move,flag)
+                mvp = raw_input()
+	        mvp = mvp.split()
 		return (int(mvp[0]), int(mvp[1]))
 		
 
@@ -49,7 +50,9 @@ class Player1:
 		#Get list of empty valid cells
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
-		return cells[random.randrange(len(cells))]
+		obj1 = Player45()
+                mvp = obj1.move(temp_board,temp_block,old_move,flag)
+                return (int(mvp[0]), int(mvp[1]))
 
 class Player2:
 	
@@ -63,7 +66,10 @@ class Player2:
 		#Get list of empty valid cells
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
-		return cells[random.randrange(len(cells))]
+		obj1 = Player76()
+                mvp = obj1.move(temp_board,temp_block,old_move,flag)
+                print 'This is me',flag
+                return (int(mvp[0]), int(mvp[1]))
 
 def determine_blocks_allowed(old_move, block_stat):
 	blocks_allowed = []
