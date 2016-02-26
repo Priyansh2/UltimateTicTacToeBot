@@ -9,6 +9,8 @@ INF = 1000000000
 t0 = 0
 complete = False
 
+visited = {}
+
 class Player76:
 
     def block_win(self,player,game,base1,base2):
@@ -200,6 +202,12 @@ class Player76:
 
     def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth):
 
+    	global visited
+
+    	state_string = self.getStateString(game)
+    	if state_string in visited and firstcall != 0:
+    		return visited[state_string]
+
         global t0
         global complete
         if time.clock() - t0 >=9:
@@ -308,19 +316,39 @@ class Player76:
        
         #If we are playing
         if player==flag:
-            max_score = scores.index(max(scores))
-            j=(moves[max_score])%10
-            i=(moves[max_score]/10)%10
+            max_score_index = scores.index(max(scores))
+            j=(moves[max_score_index])%10
+            i=(moves[max_score_index]/10)%10
+            copy[i][j] = player
+            state_string = self.getStateString(copy)
+            visited[state_string] = scores[max_score_index]
+            copy[i][j] = '-'
             if firstcall==0:
                 return (int(i),int(j))
-            return scores[max_score]
+            return scores[max_score_index]
         else:
-            min_score = scores.index(min(scores))
-            j=(moves[min_score])%10
-            i=(moves[min_score]/10)%10
+            min_score_index = scores.index(min(scores))
+            j=(moves[min_score_index])%10
+            i=(moves[min_score_index]/10)%10
+            copy[i][j] = player
+            state_string = self.getStateString(copy)
+            visited[state_string] = scores[min_score_index]
+            copy[i][j] = '-'
             if firstcall==0:
                 return (int(i),int(j))
-            return scores[min_score]
+            return scores[min_score_index]
+
+    def getStateString(self, temp_board):
+    	ret_string = ''
+    	for i in range(0,9):
+    		for j in range(0,9):
+    			if temp_board[i][j] == 'o':
+    				ret_string += '1'
+    			elif temp_board[i][j] == 'x':
+    				ret_string += '2'
+    			elif temp_board[i][j] == '-':
+    				ret_string += '0'
+    	return ret_string
 
     def move(self, temp_board, temp_block, old_move, flag):
         global t0

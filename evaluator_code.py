@@ -69,6 +69,7 @@ class Player2:
 		obj1 = Player76()
                 mvp = obj1.move(temp_board,temp_block,old_move,flag)
                 print 'This is the new me',flag
+                print mvp
                 return (int(mvp[0]), int(mvp[1]))
 
 def determine_blocks_allowed(old_move, block_stat):
