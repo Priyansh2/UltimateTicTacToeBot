@@ -19,6 +19,7 @@ import signal
 import time
 from team76 import Player76
 from team76old import Player76old
+from team45 import Player45
 
 def handler(signum, frame):
     #print 'Signal handler called with signal', signum
@@ -50,7 +51,8 @@ class Player1:
 		#Get list of empty valid cells
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
-		obj1 = Player76old()
+		#obj1 = Player76old()
+                obj1 = Player45()
                 mvp = obj1.move(temp_board,temp_block,old_move,flag)
                 return (int(mvp[0]), int(mvp[1]))
 
@@ -420,8 +422,8 @@ if __name__ == '__main__':
 		print 'Invalid option'
 		sys.exit(1)
 
-	num = random.uniform(0,1)
-	if num > 0.5:
+	num = random.randint(0,10)
+	if num >= 5:
 		simulate(obj2, obj1)
 	else:
 		simulate(obj1, obj2)
