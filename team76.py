@@ -4,6 +4,7 @@
 
 from copy import deepcopy
 import time
+from random import shuffle
 
 INF = 1000000000
 t0 = 0
@@ -302,17 +303,23 @@ class Player76:
         for i in range(0,9):
             for j in range(0,9):
                 if copy[i][j]=='-' and available[i/3][j/3]==1:
-                    copy[i][j]=player
-                    if player==flag:
-                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
-                        scores.append(cur_score)
-                        alphatemp = max(alphatemp, cur_score)
-                    else:
-                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
-                        scores.append(cur_score)
-                        betatemp = min(betatemp, cur_score)
-                    copy[i][j]='-'
                     moves.append((i)*10+(j))
+
+        shuffle(moves)
+
+        for t in range(len(moves)):
+            i = moves[t]/10
+            j = moves[t]%10
+            copy[i][j]=player
+            if player==flag:
+                cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                scores.append(cur_score)
+                alphatemp = max(alphatemp, cur_score)
+            else:
+                cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                scores.append(cur_score)
+                betatemp = min(betatemp, cur_score)
+            copy[i][j]='-'
        
         #If we are playing
         if player==flag:
