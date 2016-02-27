@@ -159,128 +159,177 @@ class Player76:
                 if block[i][0]>0:
                     final_score += 1*(block[i][0])/(105.0)
                 if block[i][1]>0:
-                    final_score += 1*(block[i][1])/(105.0)
+                    if i==1:
+                        final_score += 2*(block[i][1])/(105.0)
+                    else:
+                        final_score += 1*(block[i][1])/(105.0) 
                 if block[i][2]>0:
                     final_score += 1*(block[i][2])/(105.0)
                 if block[i][0]>0 and block[i][1]>0:
-                    final_score += 10*(block[i][0]*block[i][1])/(105*105.0)
+                    if i==1:
+                        final_score += 20*(block[i][0]*block[i][1])/(105*105.0)
+                    else:
+                        final_score += 10*(block[i][0]*block[i][1])/(105*105.0)
                 if block[i][0]>0 and block[i][2]>0:
                     final_score += 10*(block[i][0]*block[i][2])/(105*105.0)
                 if block[i][1]>0 and block[i][2]>0:
-                    final_score += 10*(block[i][1]*block[i][2])/(105*105.0)
+                    if i==1:
+                        final_score += 20*(block[i][1]*block[i][2])/(105*105.0)
+                    else:
+                        final_score += 10*(block[i][1]*block[i][2])/(105*105.0)
                 if block[i][0]>0 and block[i][1]>0 and block[i][2]>0:
-                	final_score += 100*(block[i][0]*block[i][1]*block[i][2])/(105*105*105.0)
+                    if i==1:
+                		final_score += 200*(block[i][0]*block[i][1]*block[i][2])/(105*105*105.0)
+                    else:
+                		final_score += 100*(block[i][0]*block[i][1]*block[i][2])/(105*105*105.0)
+
             if (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
                 if block[0][i]>0:
                     final_score += 1*(block[0][i])/(105.0)
                 if block[1][i]>0:
-                    final_score += 1*(block[1][i])/(105.0)
+                    if i==1:
+                        final_score += 2*(block[1][i])/(105.0)
+                    else:
+                        final_score += 1*(block[1][i])/(105.0)
                 if block[2][i]>0:
                     final_score += 1*(block[2][i])/(105.0)
                 if block[0][i]>0 and block[1][i]>0:
-                    final_score += 10*(block[0][i]*block[1][i])/(105*105.0)
+                    if i==1:
+                        final_score += 20*(block[0][i]*block[1][i])/(105*105.0)
+                    else:
+                        final_score += 10*(block[0][i]*block[1][i])/(105*105.0)
                 if block[0][i]>0 and block[2][i]>0:
                     final_score += 10*(block[0][i]*block[2][i])/(105*105.0)
                 if block[1][i]>0 and block[2][i]>0:
-                    final_score += 10*(block[1][i]*block[2][i])/(105*105.0)
+                    if i==1:
+                        final_score += 20*(block[1][i]*block[2][i])/(105*105.0)
+                    else:
+                        final_score += 10*(block[1][i]*block[2][i])/(105*105.0)
                 if block[0][i]>0 and block[1][i]>0 and block[2][i]>0:
-                	final_score += 100*(block[0][i]*block[1][i]*block[2][i])/(105*105*105.0)
+                    if i==1:
+                		final_score += 200*(block[0][i]*block[1][i]*block[2][i])/(105*105*105.0)
+                    else:
+                        final_score += 100*(block[0][i]*block[1][i]*block[2][i])/(105*105*105.0)
 
 
             if (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
                 if block[i][0]<0:
                     final_score -= 1*(abs(block[i][0]))/(105.0)
                 if block[i][1]<0:
-                    final_score -= 1*(abs(block[i][1]))/(105.0)
+                    if i==1:
+                        final_score -= 2*(abs(block[i][1]))/(105.0)
+                    else:
+                        final_score -= 1*(abs(block[i][1]))/(105.0)
                 if block[i][2]<0:
                     final_score -= 1*(abs(block[i][2]))/(105.0)
                 if block[i][0]<0 and block[i][1]<0:
-                    final_score -= 10*(abs(block[i][0])*abs(block[i][1]))/(105*105.0)
+                    if i==1:
+                        final_score -= 20*(abs(block[i][0])*abs(block[i][1]))/(105*105.0)
+                    else:
+                        final_score -= 10*(abs(block[i][0])*abs(block[i][1]))/(105*105.0)
                 if block[i][0]<0 and block[i][2]<0:
                     final_score -= 10*(abs(block[i][0])*abs(block[i][2]))/(105*105.0)
                 if block[i][1]<0 and block[i][2]<0:
-                    final_score -= 10*(abs(block[i][1])*abs(block[i][2]))/(105*105.0)
+                    if i==1:
+                        final_score -= 20*(abs(block[i][1])*abs(block[i][2]))/(105*105.0)
+                    else:
+                        final_score -= 10*(abs(block[i][1])*abs(block[i][2]))/(105*105.0)
                 if block[i][0]<0 and block[i][1]<0 and block[i][2]<0:
-                	final_score -= 100*(abs(block[i][0])*abs(block[i][1])*abs(block[i][2]))/(105*105*105.0)
+                    if i==1:
+                        final_score -= 200*(abs(block[i][0])*abs(block[i][1])*abs(block[i][2]))/(105*105*105.0)
+                    else:
+                        final_score -= 100*(abs(block[i][0])*abs(block[i][1])*abs(block[i][2]))/(105*105*105.0)
             if (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
                 if block[0][i]<0:
                     final_score -= 1*(abs(block[0][i]))/(105.0)
                 if block[1][i]<0:
-                    final_score -= 1*(abs(block[1][i]))/(105.0)
+                    if i==1:
+                        final_score -= 2*(abs(block[1][i]))/(105.0)
+                    else:
+                        final_score -= 1*(abs(block[1][i]))/(105.0)
                 if block[2][i]<0:
                     final_score -= 1*(abs(block[2][i]))/(105.0)
                 if block[0][i]<0 and block[1][i]<0:
-                    final_score -= 10*(abs(block[0][i])*abs(block[1][i]))/(105*105.0)
+                    if i==1:
+                        final_score -= 20*(abs(block[0][i])*abs(block[1][i]))/(105*105.0)
+                    else:
+                        final_score -= 10*(abs(block[0][i])*abs(block[1][i]))/(105*105.0)
                 if block[0][i]<0 and block[2][i]<0:
                     final_score -= 10*(abs(block[0][i])*abs(block[2][i]))/(105*105.0)
                 if block[1][i]<0 and block[2][i]<0:
-                    final_score -= 10*(abs(block[1][i])*abs(block[2][i]))/(105*105.0)
+                    if i==1:
+                        final_score -= 20*(abs(block[1][i])*abs(block[2][i]))/(105*105.0)
+                    else:
+                        final_score -= 10*(abs(block[1][i])*abs(block[2][i]))/(105*105.0)
                 if block[0][i]<0 and block[1][i]<0 and block[2][i]<0:
-                	final_score -= 100*(abs(block[0][i])*abs(block[1][i])*abs(block[2][i]))/(105*105*105.0)
+                    if i==1:	
+                        final_score -= 200*(abs(block[0][i])*abs(block[1][i])*abs(block[2][i]))/(105*105*105.0)
+                    else:
+                        final_score -= 100*(abs(block[0][i])*abs(block[1][i])*abs(block[2][i]))/(105*105*105.0)
 
         #DIAGONAL 1
 
         if block[0][0]>0:
             final_score += 1*(block[0][0])/(105.0)
         if block[1][1]>0:
-            final_score += 1*(block[1][1])/(105.0)
+            final_score += 2*(block[1][1])/(105.0)
         if block[2][2]>0:
             final_score += 1*(block[2][2])/(105.0)
         if block[0][0]>0 and block[1][1]>0:
-            final_score += 10*(block[0][0]*block[1][1])/(105*105.0)
+            final_score += 20*(block[0][0]*block[1][1])/(105*105.0)
         if block[0][0]>0 and block[2][2]>0:
             final_score += 10*(block[0][0]*block[2][2])/(105*105.0)
         if block[1][1]>0 and block[2][2]>0:
-            final_score += 10*(block[1][1]*block[2][2])/(105*105.0)
+            final_score += 20*(block[1][1]*block[2][2])/(105*105.0)
         if block[0][0]>0 and block[1][1]>0 and block[2][2]>0:
-        	final_score += 100*(block[0][0]*block[1][1]*block[2][2])/(105*105*105.0)
+            final_score += 200*(block[0][0]*block[1][1]*block[2][2])/(105*105*105.0)
 
         if block[0][0]<0:
             final_score -= 1*(abs(block[0][0]))/(105.0)
         if block[1][1]<0:
-            final_score -= 1*(abs(block[1][1]))/(105.0)
+            final_score -= 2*(abs(block[1][1]))/(105.0)
         if block[2][2]<0:
             final_score -= 1*(abs(block[2][2]))/(105.0)
         if block[0][0]<0 and block[1][1]<0:
-            final_score -= 10*(abs(block[0][0])*abs(block[1][1]))/(105*105.0)
+            final_score -= 20*(abs(block[0][0])*abs(block[1][1]))/(105*105.0)
         if block[0][0]<0 and block[2][2]<0:
             final_score -= 10*(abs(block[0][0])*abs(block[2][2]))/(105*105.0)
         if block[1][1]<0 and block[2][2]<0:
-            final_score -= 10*(abs(block[1][1])*abs(block[2][2]))/(105*105.0)
+            final_score -= 20*(abs(block[1][1])*abs(block[2][2]))/(105*105.0)
         if block[0][0]<0 and block[1][1]<0 and block[2][2]<0:
-			final_score -= 100*(abs(block[0][0])*abs(block[1][1])*abs(block[2][2]))/(105*105*105.0)
+	    	final_score -= 200*(abs(block[0][0])*abs(block[1][1])*abs(block[2][2]))/(105*105*105.0)
         
         #DIAGONAL 2
 
         if block[2][0]>0:
             final_score += 1*(block[2][0])/(105.0)
         if block[1][1]>0:
-            final_score += 1*(block[1][1])/(105.0)
+            final_score += 2*(block[1][1])/(105.0)
         if block[0][2]>0:
             final_score += 1*(block[0][2])/(105.0)
         if block[2][0]>0 and block[1][1]>0:
-            final_score += 10*(block[2][0]*block[1][1])/(105*105.0)
+            final_score += 20*(block[2][0]*block[1][1])/(105*105.0)
         if block[2][0]>0 and block[0][2]>0:
             final_score += 10*(block[2][0]*block[0][2])/(105*105.0)
         if block[1][1]>0 and block[0][2]>0:
-            final_score += 10*(block[1][1]*block[0][2])/(105*105.0)
+            final_score += 20*(block[1][1]*block[0][2])/(105*105.0)
         if block[2][0]>0 and block[1][1]>0 and block[0][2]>0:
-        	final_score += 100*(block[2][0]*block[1][1]*block[0][2])/(105*105*105.0)
+            final_score += 200*(block[2][0]*block[1][1]*block[0][2])/(105*105*105.0)
 
         if block[2][0]<0:
             final_score -= 1*(abs(block[2][0]))/(105.0)
         if block[1][1]<0:
-            final_score -= 1*(abs(block[1][1]))/(105.0)
+            final_score -= 2*(abs(block[1][1]))/(105.0)
         if block[0][2]<0:
             final_score -= 1*(abs(block[0][2]))/(105.0)
         if block[2][0]<0 and block[1][1]<0:
-            final_score -= 10*(abs(block[2][0])*abs(block[1][1]))/(105*105.0)
+            final_score -= 20*(abs(block[2][0])*abs(block[1][1]))/(105*105.0)
         if block[2][0]<0 and block[0][2]<0:
             final_score -= 10*(abs(block[2][0])*abs(block[0][2]))/(105*105.0)
         if block[1][1]<0 and block[0][2]<0:
-            final_score -= 10*(abs(block[1][1])*abs(block[0][2]))/(105*105.0)
+            final_score -= 20*(abs(block[1][1])*abs(block[0][2]))/(105*105.0)
         if block[2][0]<0 and block[1][1]<0 and block[0][2]<0:
-			final_score -= 100*(abs(block[2][0])*abs(block[1][1])*abs(block[0][2]))/(105*105*105.0)
+	    final_score -= 200*(abs(block[2][0])*abs(block[1][1])*abs(block[0][2]))/(105*105*105.0)
 
         if player==flag:
             return final_score
