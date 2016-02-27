@@ -60,9 +60,18 @@ class Player76:
                     return 0
         return 1
 
-    #HEURISTIC
+    #HEURISTIC - DOESNT WORK WELL!
     def assumedScore(self,game,depth,player,flag):
         block = [[0,0,0],[0,0,0],[0,0,0]]
+        finished = [[0,0,0],[0,0,0],[0,0,0]]
+        for i in range(0,3):
+        	for j in range(0,3):
+        		if self.block_win(flag,game,i,j):
+        			finished[i][j]=1
+        		elif self.block_win(('x' if flag == 'o' else 'o'),game,i,j):
+        			finished[i][j]=2
+        		elif self.completed_block(game,i,j):
+        			finished[i][j]=3
         for i in range(0,3):
             for j in range(0,3):
                 captured=0
@@ -88,27 +97,27 @@ class Player76:
                             opc+=1
                     if cr == 3:
                         captured += 100
-                    if cr == 2:
+                    if cr == 2 and opr == 0:
                         captured += 10
-                    if cr == 1:
+                    if cr == 1 and opr == 0:
                         captured += 1
                     if cc == 3:
                         captured += 100
-                    if cc == 2:
+                    if cc == 2 and opc == 0:
                         captured += 10
-                    if cc == 1:
+                    if cc == 1 and opc == 0:
                         captured += 1
                     if opr == 3:
                         captured -= 100
-                    if opr == 2:
+                    if opr == 2 and cr == 0:
                         captured -= 10
-                    if opr == 1:
+                    if opr == 1 and cr == 0:
                         captured -= 1
                     if opc == 3:
                         captured -= 100
-                    if opc == 2:
+                    if opc == 2 and cc == 0:
                         captured -= 10
-                    if opc == 1:
+                    if opc == 1 and cc == 0:
                         captured -= 1
                     if game[baser + p][basec + p] == player:
                         pdp += 1
@@ -120,81 +129,158 @@ class Player76:
                         sdo += 1
                 if pdp == 3:
                     captured += 100
-                if pdp == 2:
+                if pdp == 2 and pdo == 0:
                     captured += 10
-                if pdp == 1:
+                if pdp == 1 and pdo == 0:
                     captured += 1
                 if sdp == 3:
                     captured += 100
-                if sdp == 2:
+                if sdp == 2 and sdo == 0:
                     captured += 10
-                if sdp == 1:
+                if sdp == 1 and sdo == 0:
                     captured += 1
                 if pdo == 3:
                     captured -= 100
-                if pdo == 2:
+                if pdo == 2 and pdp == 0:
                     captured -= 10
-                if pdo == 1:
+                if pdo == 1 and pdp == 0:
                     captured -= 1
                 if sdo == 3:
                     captured -= 100
-                if sdo == 2:
+                if sdo == 2 and sdp == 0:
                     captured -= 10
-                if sdo == 1:
+                if sdo == 1 and sdp == 0:
                     captured -= 1
                 block[i][j] = captured
 
-        final_score = 0
+        final_score = 0.0
         for i in range(0,3):
-            row = 1
-            col = 1
-            if block[i][0]>0:
-                row *= block[i][0]
-            if block[i][1]>0:
-                row *= block[i][1]
-            if block[i][2]>0:
-                row *= block[i][2]
-            if block[0][i]>0:
-                col *= block[0][i]
-            if block[1][i]>0:
-                col *= block[1][i]
-            if block[2][i]>0:
-                col *= block[2][i]
+            if (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0)and (finished[i][2]==1 or finished[i][2]==0):
+                if block[i][0]>0:
+                    final_score += 1*(block[i][0])/(105.0)
+                if block[i][1]>0:
+                    final_score += 1*(block[i][1])/(105.0)
+                if block[i][2]>0:
+                    final_score += 1*(block[i][2])/(105.0)
+                if block[i][0]>0 and block[i][1]>0:
+                    final_score += 10*(block[i][0]*block[i][1])/(105*105.0)
+                if block[i][0]>0 and block[i][2]>0:
+                    final_score += 10*(block[i][0]*block[i][2])/(105*105.0)
+                if block[i][1]>0 and block[i][2]>0:
+                    final_score += 10*(block[i][1]*block[i][2])/(105*105.0)
+                if block[i][0]>0 and block[i][1]>0 and block[i][2]>0:
+                	final_score += 100*(block[i][0]*block[i][1]*block[i][2])/(105*105*105.0)
+            if (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
+                if block[0][i]>0:
+                    final_score += 1*(block[0][i])/(105.0)
+                if block[1][i]>0:
+                    final_score += 1*(block[1][i])/(105.0)
+                if block[2][i]>0:
+                    final_score += 1*(block[2][i])/(105.0)
+                if block[0][i]>0 and block[1][i]>0:
+                    final_score += 10*(block[0][i]*block[1][i])/(105*105.0)
+                if block[0][i]>0 and block[2][i]>0:
+                    final_score += 10*(block[0][i]*block[2][i])/(105*105.0)
+                if block[1][i]>0 and block[2][i]>0:
+                    final_score += 10*(block[1][i]*block[2][i])/(105*105.0)
+                if block[0][i]>0 and block[1][i]>0 and block[2][i]>0:
+                	final_score += 100*(block[0][i]*block[1][i]*block[2][i])/(105*105*105.0)
 
-            final_score += row + col
 
-            row = 1
-            col = 1
-            if block[i][0]<0:
-                row *= abs(block[i][0])
-            if block[i][1]<0:
-                row *= abs(block[i][1])
-            if block[i][2]<0:
-                row *= abs(block[i][2])
-            if block[0][i]<0:
-                col *= abs(block[0][i])
-            if block[1][i]<0:
-                col *= abs(block[1][i])
-            if block[2][i]<0:
-                col *= abs(block[2][i])
+            if (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
+                if block[i][0]<0:
+                    final_score -= 1*(abs(block[i][0]))/(105.0)
+                if block[i][1]<0:
+                    final_score -= 1*(abs(block[i][1]))/(105.0)
+                if block[i][2]<0:
+                    final_score -= 1*(abs(block[i][2]))/(105.0)
+                if block[i][0]<0 and block[i][1]<0:
+                    final_score -= 10*(abs(block[i][0])*abs(block[i][1]))/(105*105.0)
+                if block[i][0]<0 and block[i][2]<0:
+                    final_score -= 10*(abs(block[i][0])*abs(block[i][2]))/(105*105.0)
+                if block[i][1]<0 and block[i][2]<0:
+                    final_score -= 10*(abs(block[i][1])*abs(block[i][2]))/(105*105.0)
+                if block[i][0]<0 and block[i][1]<0 and block[i][2]<0:
+                	final_score -= 100*(abs(block[i][0])*abs(block[i][1])*abs(block[i][2]))/(105*105*105.0)
+            if (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
+                if block[0][i]<0:
+                    final_score -= 1*(abs(block[0][i]))/(105.0)
+                if block[1][i]<0:
+                    final_score -= 1*(abs(block[1][i]))/(105.0)
+                if block[2][i]<0:
+                    final_score -= 1*(abs(block[2][i]))/(105.0)
+                if block[0][i]<0 and block[1][i]<0:
+                    final_score -= 10*(abs(block[0][i])*abs(block[1][i]))/(105*105.0)
+                if block[0][i]<0 and block[2][i]<0:
+                    final_score -= 10*(abs(block[0][i])*abs(block[2][i]))/(105*105.0)
+                if block[1][i]<0 and block[2][i]<0:
+                    final_score -= 10*(abs(block[1][i])*abs(block[2][i]))/(105*105.0)
+                if block[0][i]<0 and block[1][i]<0 and block[2][i]<0:
+                	final_score -= 100*(abs(block[0][i])*abs(block[1][i])*abs(block[2][i]))/(105*105*105.0)
 
-            final_score -= row + col
+        #DIAGONAL 1
 
-        diag11 = 1
-        diag12 = 1
-        diag21 = 1
-        diag22 = 1
-        for p in range(0,3):
-            if block[p][p]>0:
-                diag11 *= block[p][p]
-            if block[p][p]<0:
-                diag12 *= abs(block[p][p])
-            if block[p][2-p]>0:
-                diag21 *= block[p][2-p]
-            if block[p][2-p]<0:
-                diag22 *= abs(block[p][2-p])
+        if block[0][0]>0:
+            final_score += 1*(block[0][0])/(105.0)
+        if block[1][1]>0:
+            final_score += 1*(block[1][1])/(105.0)
+        if block[2][2]>0:
+            final_score += 1*(block[2][2])/(105.0)
+        if block[0][0]>0 and block[1][1]>0:
+            final_score += 10*(block[0][0]*block[1][1])/(105*105.0)
+        if block[0][0]>0 and block[2][2]>0:
+            final_score += 10*(block[0][0]*block[2][2])/(105*105.0)
+        if block[1][1]>0 and block[2][2]>0:
+            final_score += 10*(block[1][1]*block[2][2])/(105*105.0)
+        if block[0][0]>0 and block[1][1]>0 and block[2][2]>0:
+        	final_score += 100*(block[0][0]*block[1][1]*block[2][2])/(105*105*105.0)
 
-        final_score += diag11 + diag21 - diag12 - diag22
+        if block[0][0]<0:
+            final_score -= 1*(abs(block[0][0]))/(105.0)
+        if block[1][1]<0:
+            final_score -= 1*(abs(block[1][1]))/(105.0)
+        if block[2][2]<0:
+            final_score -= 1*(abs(block[2][2]))/(105.0)
+        if block[0][0]<0 and block[1][1]<0:
+            final_score -= 10*(abs(block[0][0])*abs(block[1][1]))/(105*105.0)
+        if block[0][0]<0 and block[2][2]<0:
+            final_score -= 10*(abs(block[0][0])*abs(block[2][2]))/(105*105.0)
+        if block[1][1]<0 and block[2][2]<0:
+            final_score -= 10*(abs(block[1][1])*abs(block[2][2]))/(105*105.0)
+        if block[0][0]<0 and block[1][1]<0 and block[2][2]<0:
+			final_score -= 100*(abs(block[0][0])*abs(block[1][1])*abs(block[2][2]))/(105*105*105.0)
+        
+        #DIAGONAL 2
+
+        if block[2][0]>0:
+            final_score += 1*(block[2][0])/(105.0)
+        if block[1][1]>0:
+            final_score += 1*(block[1][1])/(105.0)
+        if block[0][2]>0:
+            final_score += 1*(block[0][2])/(105.0)
+        if block[2][0]>0 and block[1][1]>0:
+            final_score += 10*(block[2][0]*block[1][1])/(105*105.0)
+        if block[2][0]>0 and block[0][2]>0:
+            final_score += 10*(block[2][0]*block[0][2])/(105*105.0)
+        if block[1][1]>0 and block[0][2]>0:
+            final_score += 10*(block[1][1]*block[0][2])/(105*105.0)
+        if block[2][0]>0 and block[1][1]>0 and block[0][2]>0:
+        	final_score += 100*(block[2][0]*block[1][1]*block[0][2])/(105*105*105.0)
+
+        if block[2][0]<0:
+            final_score -= 1*(abs(block[2][0]))/(105.0)
+        if block[1][1]<0:
+            final_score -= 1*(abs(block[1][1]))/(105.0)
+        if block[0][2]<0:
+            final_score -= 1*(abs(block[0][2]))/(105.0)
+        if block[2][0]<0 and block[1][1]<0:
+            final_score -= 10*(abs(block[2][0])*abs(block[1][1]))/(105*105.0)
+        if block[2][0]<0 and block[0][2]<0:
+            final_score -= 10*(abs(block[2][0])*abs(block[0][2]))/(105*105.0)
+        if block[1][1]<0 and block[0][2]<0:
+            final_score -= 10*(abs(block[1][1])*abs(block[0][2]))/(105*105.0)
+        if block[2][0]<0 and block[1][1]<0 and block[0][2]<0:
+			final_score -= 100*(abs(block[2][0])*abs(block[1][1])*abs(block[0][2]))/(105*105*105.0)
 
         if player==flag:
             return final_score
@@ -299,28 +385,23 @@ class Player76:
       
         alphatemp = deepcopy(alpha)
         betatemp = deepcopy(beta)
-
+ 
         for i in range(0,9):
             for j in range(0,9):
                 if copy[i][j]=='-' and available[i/3][j/3]==1:
+                    copy[i][j]=player
+                    if player==flag:
+                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                        scores.append(cur_score)
+                        alphatemp = max(alphatemp, cur_score)
+                    else:
+                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                        scores.append(cur_score)
+                        betatemp = min(betatemp, cur_score)
+                    copy[i][j]='-'
                     moves.append((i)*10+(j))
 
-        shuffle(moves)
 
-        for t in range(len(moves)):
-            i = moves[t]/10
-            j = moves[t]%10
-            copy[i][j]=player
-            if player==flag:
-                cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
-                scores.append(cur_score)
-                alphatemp = max(alphatemp, cur_score)
-            else:
-                cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
-                scores.append(cur_score)
-                betatemp = min(betatemp, cur_score)
-            copy[i][j]='-'
-       
         #If we are playing
         if player==flag:
             max_score_index = scores.index(max(scores))

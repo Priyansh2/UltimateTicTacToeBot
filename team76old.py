@@ -3,8 +3,12 @@
 # vim:fenc=utf-8
 
 from copy import deepcopy
+import time
+from random import shuffle
 
 INF = 1000000000
+t0 = 0
+complete = False
 
 class Player76old:
 
@@ -41,7 +45,7 @@ class Player76old:
     def completed_board(self,game):
         for i in range(0,9):
             for j in range(0,9):
-                if game[i][j]=='-':
+                if game[i][j]=='-' and self.block_win('x',game,i/3,j/3)==0 and self.block_win('o',game,i/3,j/3)==0:
                     return 0
         return 1
 
@@ -195,8 +199,13 @@ class Player76old:
         else:
             return -final_score
 
-    def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag):
+    def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth):
 
+        global t0
+        global complete
+        if time.clock() - t0 >=9:
+            complete = False
+            return self.assumedScore(game,depth,player,flag)
         if alpha>beta:
             if player==flag:
                 #Parent is minimizer
@@ -205,7 +214,7 @@ class Player76old:
                 #Parent is maximizer
                 return -INF
         #The game is complete (All blocks filled) or if there is a winner of the game, then return the heruistic based cost function values
-        if self.board_win('o',game) or self.board_win('x',game) or self.completed_board(game) or depth>=4: 
+        if self.board_win('o',game) or self.board_win('x',game) or self.completed_board(game) or depth>=maxdepth: 
             return self.assumedScore(game,depth,player,flag)
 
         scores = []
@@ -286,13 +295,34 @@ class Player76old:
         for i in range(0,9):
             for j in range(0,9):
                 if copy[i][j]=='-' and available[i/3][j/3]==1:
+                    moves.append((i)*10+(j))
+
+        shuffle(moves)
+
+        for t in range(len(moves)):
+            i = (moves[t]/10)%10
+            j = moves[t]%10
+            copy[i][j]=player
+            if player==flag:
+                cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                scores.append(cur_score)
+                alphatemp = max(alphatemp, cur_score)
+            else:
+                cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                scores.append(cur_score)
+                betatemp = min(betatemp, cur_score)
+            copy[i][j]='-'
+
+        for i in range(0,9):
+            for j in range(0,9):
+                if copy[i][j]=='-' and available[i/3][j/3]==1:
                     copy[i][j]=player
                     if player==flag:
-                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag)
+                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
                         scores.append(cur_score)
                         alphatemp = max(alphatemp, cur_score)
                     else:
-                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag)
+                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
                         scores.append(cur_score)
                         betatemp = min(betatemp, cur_score)
                     copy[i][j]='-'
@@ -315,9 +345,25 @@ class Player76old:
             return scores[min_score]
 
     def move(self, temp_board, temp_block, old_move, flag):
-    	previous_move_r, previous_move_c = old_move[0], old_move[1]
+        global t0
+        global complete
+        t0 = time.clock()
+        previous_move_r, previous_move_c = old_move[0], old_move[1]
     	if previous_move_c==-1 and previous_move_r==-1:
     	    selected_block=-1
     	else:
     	    selected_block = ((previous_move_c)%3+((previous_move_r)%3)*3) #x is the column y is the row
-    	return self.minimax(flag,temp_board,0,0,-INF,INF,selected_block,flag)
+        complete = True
+        answer = self.minimax(flag,temp_board,0,0,-INF,INF,selected_block,flag,4)
+        t1 = time.clock()
+        max_depth = 5
+        while t1-t0 <= 8:
+            complete = True
+            answer1 = self.minimax(flag,temp_board,0,0,-INF,INF,selected_block,flag,max_depth)
+            if complete == True:
+                answer = answer1
+                max_depth += 1
+                t1 = time.clock()
+            else:
+                break
+        return answer

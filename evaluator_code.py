@@ -293,7 +293,7 @@ def simulate(obj1,obj2):
 	# Game board is a 9x9 list of lists & block_stat is a list of 9 elements indicating if a block has been won.
 	game_board, block_stat = get_init_board_and_blockstatus()
 
-	pl1 = obj1 
+	pl1 = obj1
 	pl2 = obj2
 
 	# Player with flag 'x' will start the game
