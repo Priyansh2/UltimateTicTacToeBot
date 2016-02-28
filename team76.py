@@ -6,7 +6,7 @@ from copy import deepcopy
 import time
 from random import shuffle
 
-INF = 1000000000
+INF = 1000000000000
 t0 = 0
 complete = False
 
@@ -62,6 +62,11 @@ class Player76:
 
     #HEURISTIC - DOESNT WORK WELL!
     def assumedScore(self,game,depth,player,flag):
+        depth = min(depth, 85)
+        if self.board_win(flag,game):
+            return INF * (85-depth)/85
+        elif self.board_win(('x' if flag == 'o' else 'o'),game):
+            return -INF * (85-depth)/85
         block = [[0,0,0],[0,0,0],[0,0,0]]
         finished = [[0,0,0],[0,0,0],[0,0,0]]
         for i in range(0,3):
@@ -155,7 +160,7 @@ class Player76:
 
         final_score = 0.0
         for i in range(0,3):
-            if 1 or (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0)and (finished[i][2]==1 or finished[i][2]==0):
+            if (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0)and (finished[i][2]==1 or finished[i][2]==0):
                 if block[i][0]>0:
                     final_score += 1*(block[i][0])/(10.0)
                 if block[i][1]>0:
@@ -183,7 +188,7 @@ class Player76:
                     else:
                 		final_score += 500*(block[i][0]*block[i][1]*block[i][2])/(10*10*10.0)
 
-            if 1 or (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
+            if (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
                 if block[0][i]>0:
                     final_score += 1*(block[0][i])/(10.0)
                 if block[1][i]>0:
@@ -212,7 +217,7 @@ class Player76:
                         final_score += 500*(block[0][i]*block[1][i]*block[2][i])/(10*10*10.0)
 
 
-            if 1 or (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
+            if (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
                 if block[i][0]<0:
                     final_score -= 1*(abs(block[i][0]))/(10.0)
                 if block[i][1]<0:
@@ -239,7 +244,7 @@ class Player76:
                         final_score -= 500*(abs(block[i][0])*abs(block[i][1])*abs(block[i][2]))/(10*10*10.0)
                     else:
                         final_score -= 500*(abs(block[i][0])*abs(block[i][1])*abs(block[i][2]))/(10*10*10.0)
-            if 1 or (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
+            if (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
                 if block[0][i]<0:
                     final_score -= 1*(abs(block[0][i]))/(10.0)
                 if block[1][i]<0:
@@ -331,6 +336,7 @@ class Player76:
         if block[2][0]<0 and block[1][1]<0 and block[0][2]<0:
 	    	final_score -= 500*(abs(block[2][0])*abs(block[1][1])*abs(block[0][2]))/(10*10*10.0)
 
+        final_score = final_score * (85-depth)/85
         if player==flag:
             return final_score
         else:
@@ -338,7 +344,7 @@ class Player76:
 
     def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth):
 
-    	maxdepth = min(maxdepth,81-depth)
+    	maxdepth = min(maxdepth,85-depth)
 
     	#print self.assumedScore(game,depth,player,flag)
     	#return (0,0)
@@ -357,10 +363,10 @@ class Player76:
         if alpha>=beta:
             if player==flag:
                 #Parent is minimizer
-                return INF
+                return 100*INF
             else:
                 #Parent is maximizer
-                return -INF
+                return -100*INF
         #The game is complete (All blocks filled) or if there is a winner of the game, then return the heruistic based cost function values
         if self.board_win('o',game) or self.board_win('x',game) or self.completed_board(game) or depth>=maxdepth: 
             return self.assumedScore(game,depth,player,flag)
