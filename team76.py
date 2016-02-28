@@ -354,7 +354,7 @@ class Player76:
         if time.clock() - t0 >=9 and firstcall != 0:
             complete = False
             return self.assumedScore(game,depth,player,flag)
-        if alpha>beta:
+        if alpha>=beta:
             if player==flag:
                 #Parent is minimizer
                 return INF
