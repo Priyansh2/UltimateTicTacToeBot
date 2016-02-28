@@ -20,6 +20,8 @@ import time
 from team76 import Player76
 from team76old import Player76old
 from team45 import Player45
+from tempgame import Player36
+from team5 import Player5
 
 def handler(signum, frame):
     #print 'Signal handler called with signal', signum

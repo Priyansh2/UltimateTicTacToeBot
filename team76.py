@@ -96,25 +96,25 @@ class Player76:
                         if game[baser + q][basec + p] == ('x' if player == 'o' else 'o'):
                             opc+=1
                     if cr == 3:
-                        captured += 500
+                        captured += 100
                     if cr == 2 and opr == 0:
                         captured += 10
                     if cr == 1 and opr == 0:
                         captured += 1
                     if cc == 3:
-                        captured += 500
+                        captured += 100
                     if cc == 2 and opc == 0:
                         captured += 10
                     if cc == 1 and opc == 0:
                         captured += 1
                     if opr == 3:
-                        captured -= 500
+                        captured -= 100
                     if opr == 2 and cr == 0:
                         captured -= 10
                     if opr == 1 and cr == 0:
                         captured -= 1
                     if opc == 3:
-                        captured -= 500
+                        captured -= 100
                     if opc == 2 and cc == 0:
                         captured -= 10
                     if opc == 1 and cc == 0:
@@ -128,25 +128,25 @@ class Player76:
                     if game[baser + p][basec + 2 - p] == ('x' if player == 'o' else 'o'):
                         sdo += 1
                 if pdp == 3:
-                    captured += 500
+                    captured += 100
                 if pdp == 2 and pdo == 0:
                     captured += 10
                 if pdp == 1 and pdo == 0:
                     captured += 1
                 if sdp == 3:
-                    captured += 500
+                    captured += 100
                 if sdp == 2 and sdo == 0:
                     captured += 10
                 if sdp == 1 and sdo == 0:
                     captured += 1
                 if pdo == 3:
-                    captured -= 500
+                    captured -= 100
                 if pdo == 2 and pdp == 0:
                     captured -= 10
                 if pdo == 1 and pdp == 0:
                     captured -= 1
                 if sdo == 3:
-                    captured -= 500
+                    captured -= 100
                 if sdo == 2 and sdp == 0:
                     captured -= 10
                 if sdo == 1 and sdp == 0:
@@ -347,7 +347,7 @@ class Player76:
 
     	state_string = self.getStateString(game)
     	if state_string in visited and firstcall != 0:
-    		return visited[state_string]
+    	    return visited[state_string]
 
         global t0
         global complete
