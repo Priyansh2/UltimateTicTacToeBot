@@ -6,13 +6,15 @@ from copy import deepcopy
 import time
 from random import shuffle
 
-INF = 1000000000000
-t0 = 0
-complete = False
-
-visited = {}
 
 class Player76:
+
+    def __init__(self):
+        self.INF = 1000000000000
+        self.t0 = 0
+        self.complete = False
+
+        self.visited = {}
 
     def block_win(self,player,game,base1,base2):
         base1*=3
@@ -64,9 +66,9 @@ class Player76:
     def assumedScore(self,game,depth,player,flag):
         depth = min(depth, 85)
         if self.board_win(flag,game):
-            return INF * (85-depth)/85
+            return self.INF * (85-depth)/85
         elif self.board_win(('x' if flag == 'o' else 'o'),game):
-            return -INF * (85-depth)/85
+            return -self.INF * (85-depth)/85
         block = [[0,0,0],[0,0,0],[0,0,0]]
         finished = [[0,0,0],[0,0,0],[0,0,0]]
         for i in range(0,3):
@@ -349,24 +351,20 @@ class Player76:
     	#print self.assumedScore(game,depth,player,flag)
     	#return (0,0)
 
-    	global visited
-
     	state_string = self.getStateString(game)
-    	if state_string in visited and firstcall != 0:
-    	    return visited[state_string]
+    	if state_string in self.visited and firstcall != 0:
+    	    return self.visited[state_string]
 
-        global t0
-        global complete
-        if time.clock() - t0 >=9 and firstcall != 0:
-            complete = False
+        if time.clock() - self.t0 >=9 and firstcall != 0:
+            self.complete = False
             return self.assumedScore(game,depth,player,flag)
         if alpha>=beta:
             if player==flag:
                 #Parent is minimizer
-                return 100*INF
+                return 100*self.INF
             else:
                 #Parent is maximizer
-                return -100*INF
+                return -100*self.INF
         #The game is complete (All blocks filled) or if there is a winner of the game, then return the heruistic based cost function values
         if self.board_win('o',game) or self.board_win('x',game) or self.completed_board(game) or depth>=maxdepth: 
             return self.assumedScore(game,depth,player,flag)
@@ -469,7 +467,7 @@ class Player76:
             i=(moves[max_score_index]/10)%10
             copy[i][j] = player
             state_string = self.getStateString(copy)
-            visited[state_string] = scores[max_score_index]
+            self.visited[state_string] = scores[max_score_index]
             copy[i][j] = '-'
             if firstcall==0:
                 return (int(i),int(j))
@@ -480,7 +478,7 @@ class Player76:
             i=(moves[min_score_index]/10)%10
             copy[i][j] = player
             state_string = self.getStateString(copy)
-            visited[state_string] = scores[min_score_index]
+            self.visited[state_string] = scores[min_score_index]
             copy[i][j] = '-'
             if firstcall==0:
                 return (int(i),int(j))
@@ -499,22 +497,20 @@ class Player76:
     	return ret_string
 
     def move(self, temp_board, temp_block, old_move, flag):
-        global t0
-        global complete
-        t0 = time.clock()
+        self.t0 = time.clock()
         previous_move_r, previous_move_c = old_move[0], old_move[1]
     	if previous_move_c==-1 and previous_move_r==-1:
     	    selected_block=-1
     	else:
     	    selected_block = ((previous_move_c)%3+((previous_move_r)%3)*3) #x is the column y is the row
-        complete = True
-        answer = self.minimax(flag,temp_board,0,0,-INF,INF,selected_block,flag,4)
+        self.complete = True
+        answer = self.minimax(flag,temp_board,0,0,-self.INF,self.INF,selected_block,flag,4)
         t1 = time.clock()
         max_depth = 5
-        while t1-t0 <= 8:
-            complete = True
-            answer1 = self.minimax(flag,temp_board,0,0,-INF,INF,selected_block,flag,max_depth)
-            if complete == True:
+        while t1-self.t0 <= 8:
+            self.complete = True
+            answer1 = self.minimax(flag,temp_board,0,0,-self.INF,self.INF,selected_block,flag,max_depth)
+            if self.complete == True:
                 answer = answer1
                 max_depth += 1
                 t1 = time.clock()
