@@ -503,7 +503,6 @@ class Player76old:
         self.complete = True
         answer = self.minimax(flag,temp_board,0,0,-self.INF,self.INF,selected_block,flag,4)
         t1 = time.clock()
-        return answer
         max_depth = 5
         while t1-self.t0 <= 8:
             self.complete = True
