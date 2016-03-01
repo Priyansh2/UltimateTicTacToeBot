@@ -94,13 +94,13 @@ class Player76:
                     opr = 0
                     opc = 0
                     for q in range(0,3):
-                        if game[baser + p][basec + q] == player:
+                        if game[baser + p][basec + q] == flag:
                             cr+=1
-                        if game[baser + p][basec + q] == ('x' if player == 'o' else 'o'):
+                        if game[baser + p][basec + q] == ('x' if flag == 'o' else 'o'):
                             opr+=1
-                        if game[baser + q][basec + p] == player:
+                        if game[baser + q][basec + p] == flag:
                             cc+=1
-                        if game[baser + q][basec + p] == ('x' if player == 'o' else 'o'):
+                        if game[baser + q][basec + p] == ('x' if flag == 'o' else 'o'):
                             opc+=1
                     if cr == 3:
                         captured += 100
@@ -126,13 +126,13 @@ class Player76:
                         captured -= 10
                     if opc == 1 and cc == 0:
                         captured -= 1
-                    if game[baser + p][basec + p] == player:
+                    if game[baser + p][basec + p] == flag:
                         pdp += 1
-                    if game[baser + p][basec + 2 - p] == player:
+                    if game[baser + p][basec + 2 - p] == flag:
                         sdp += 1
-                    if game[baser + p][basec + p] == ('x' if player == 'o' else 'o'):
+                    if game[baser + p][basec + p] == ('x' if flag == 'o' else 'o'):
                         pdo += 1
-                    if game[baser + p][basec + 2 - p] == ('x' if player == 'o' else 'o'):
+                    if game[baser + p][basec + 2 - p] == ('x' if flag == 'o' else 'o'):
                         sdo += 1
                 if pdp == 3:
                     captured += 100
@@ -339,10 +339,7 @@ class Player76:
 	    	final_score -= 500*(abs(block[2][0])*abs(block[1][1])*abs(block[0][2]))/(10*10*10.0)
 
         final_score = final_score * (85-depth)/85
-        if player==flag:
-            return final_score
-        else:
-            return -final_score
+        return final_score
 
     def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth):
 
