@@ -94,11 +94,11 @@ class Player76old:
                         if game[br+ii][bc+2]==flag:
                             captured += 1
                         if game[br+ii][bc+0]==flag and game[br+ii][bc+1]==flag:
-                            captured += 5
+                            captured += 5 - 2
                         if game[br+ii][bc+0]==flag and game[br+ii][bc+2]==flag:
-                            captured += 5
+                            captured += 5 - 2
                         if game[br+ii][bc+1]==flag and game[br+ii][bc+2]==flag:
-                            captured += 5
+                            captured += 5 - 2
                         if game[br+ii][bc+0]==flag and game[br+ii][bc+1]==flag and game[br+ii][bc+2]==flag:
                             captured += 100
                     if (game[br+ii][bc+0]==flagop or game[br+ii][bc+0]=='-') and (game[br+ii][bc+1]==flagop or game[br+ii][bc+1]=='-') and (game[br+ii][bc+2]==flagop or game[br+ii][bc+2]=='-'):
@@ -109,11 +109,11 @@ class Player76old:
                         if game[br+ii][bc+2]==flagop:
                             captured -= 1
                         if game[br+ii][bc+0]==flagop and game[br+ii][bc+1]==flagop:
-                            captured -= 5
+                            captured -= 5 - 2
                         if game[br+ii][bc+0]==flagop and game[br+ii][bc+2]==flagop:
-                            captured -= 5
+                            captured -= 5 - 2
                         if game[br+ii][bc+1]==flagop and game[br+ii][bc+2]==flagop:
-                            captured -= 5
+                            captured -= 5 - 2
                         if game[br+ii][bc+0]==flagop and game[br+ii][bc+1]==flagop and game[br+ii][bc+2]==flagop:
                             captured -= 100
 
@@ -125,11 +125,11 @@ class Player76old:
                         if game[br+2][bc+ii]==flag:
                             captured += 1
                         if game[br+0][bc+ii]==flag and game[br+1][bc+ii]==flag:
-                            captured += 5
+                            captured += 5 - 2
                         if game[br+0][bc+ii]==flag and game[br+2][bc+ii]==flag:
-                            captured += 5
+                            captured += 5 - 2
                         if game[br+1][bc+ii]==flag and game[br+2][bc+ii]==flag:
-                            captured += 5
+                            captured += 5 - 2
                         if game[br+0][bc+ii]==flag and game[br+1][bc+ii]==flag and game[br+2][bc+ii]==flag:
                             captured += 100
                         
@@ -141,11 +141,11 @@ class Player76old:
                         if game[br+2][bc+ii]==flagop:
                             captured -= 1
                         if game[br+0][bc+ii]==flagop and game[br+1][bc+ii]==flagop:
-                            captured -= 5
+                            captured -= 5 - 2
                         if game[br+0][bc+ii]==flagop and game[br+2][bc+ii]==flagop:
-                            captured -= 5
+                            captured -= 5 - 2
                         if game[br+1][bc+ii]==flagop and game[br+2][bc+ii]==flagop:
-                            captured -= 5
+                            captured -= 5 - 2
                         if game[br+0][bc+ii]==flagop and game[br+1][bc+ii]==flagop and game[br+2][bc+ii]==flagop:
                             captured -= 100
 
@@ -158,11 +158,11 @@ class Player76old:
                     if game[br+2][bc+2]==flag:
                         captured += 1
                     if game[br+0][bc+0]==flag and game[br+1][bc+1]==flag:
-                        captured += 5
+                        captured += 5 - 2
                     if game[br+1][bc+1]==flag and game[br+2][bc+2]==flag:
-                        captured += 5
+                        captured += 5 - 2
                     if game[br+0][bc+0]==flag and game[br+2][bc+2]==flag:
-                        captured += 5
+                        captured += 5 - 2
                     if game[br+0][bc+0]==flag and game[br+1][bc+1]==flag and game[br+2][bc+2]==flag:
                         captured += 100
 
@@ -174,11 +174,11 @@ class Player76old:
                     if game[br+2][bc+2]==flagop:
                         captured -= 1
                     if game[br+0][bc+0]==flagop and game[br+1][bc+1]==flagop:
-                        captured -= 5
+                        captured -= 5 - 2
                     if game[br+1][bc+1]==flagop and game[br+2][bc+2]==flagop:
-                        captured -= 5
+                        captured -= 5 - 2
                     if game[br+0][bc+0]==flagop and game[br+2][bc+2]==flagop:
-                        captured -= 5
+                        captured -= 5 - 2
                     if game[br+0][bc+0]==flagop and game[br+1][bc+1]==flagop and game[br+2][bc+2]==flagop:
                         captured -= 100
                 
@@ -191,11 +191,11 @@ class Player76old:
                     if game[br+0][bc+2]==flag:
                         captured += 1
                     if game[br+2][bc+0]==flag and game[br+1][bc+1]==flag:
-                        captured += 5
+                        captured += 5 - 2
                     if game[br+1][bc+1]==flag and game[br+0][bc+2]==flag:
-                        captured += 5
+                        captured += 5 - 2
                     if game[br+2][bc+0]==flag and game[br+0][bc+2]==flag:
-                        captured += 5
+                        captured += 5 - 2
                     if game[br+2][bc+0]==flag and game[br+1][bc+1]==flag and game[br+0][bc+2]==flag:
                         captured += 100
 
@@ -207,11 +207,11 @@ class Player76old:
                     if game[br+0][bc+2]==flagop:
                         captured -= 1
                     if game[br+2][bc+0]==flagop and game[br+1][bc+1]==flagop:
-                        captured -= 5
+                        captured -= 5 - 2
                     if game[br+1][bc+1]==flagop and game[br+0][bc+2]==flagop:
-                        captured -= 5
+                        captured -= 5 - 2
                     if game[br+2][bc+0]==flagop and game[br+0][bc+2]==flagop:
-                        captured -= 5
+                        captured -= 5 - 2
                     if game[br+2][bc+0]==flagop and game[br+1][bc+1]==flagop and game[br+0][bc+2]==flagop:
                         captured -= 100
 

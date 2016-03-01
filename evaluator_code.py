@@ -56,7 +56,7 @@ class Player1:
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
 		#obj1 = Player4()
-                obj1 = Player36()
+                obj1 = Player4()
                 mvp = obj1.move(temp_board,temp_block,old_move,flag)
                 return (int(mvp[0]), int(mvp[1]))
 
