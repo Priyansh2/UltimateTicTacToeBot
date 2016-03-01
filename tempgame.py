@@ -87,6 +87,9 @@ class Player36:
                     elif xs==2 and os==0:
                         ans-=10
             temp[i/3][i%3]=ans
+            # print
+            # print ans,blocks[i]
+            # print
         ans=0
         for i in range(8):
             prerow=self.rows[i]
@@ -100,13 +103,21 @@ class Player36:
                 if block[prerow[j]]=='o':
                     os+=1
             if flag=='o' and xs==3:
-                ans-=100
+                ans-=1000
             if flag=='x' and os==3:
-                ans-=100
+                ans-=1000
             if flag=='x' and xs==3:
-                ans+=100
+                ans+=1000
             if flag=='o' and os==3:
+                ans+=1000
+            if flag=='o' and os==2 and xs==0:
                 ans+=100
+            if flag=='x' and xs==2 and os==0:
+                ans+=100
+            if flag=='x' and os==2 and xs==0:
+                ans-=100
+            if flag=='o' and xs==2 and os==0:
+                ans-=100
             if (tempans>1 and tempans<10):
                 ans+=1+((tempans-1)*9)
             elif (tempans>10 and tempans<100):
@@ -115,15 +126,28 @@ class Player36:
                 ans+=-1+(tempans+1)*9
             elif (tempans<-10 and tempans>-100):
                 ans+=-10+(tempans+10)*90
+            else:
+                ans+=tempans
 
         return ans
 
 
 
 
-    def makeMove(self,board,block,enemyPos,depth,flag,parentvalues):
+    def makeMove(self,board,block,enemyPos,depth,flag,parentvalues,maxdepth):
 
         # childvalues = (float("-inf"),float("inf"))
+        # print enemyPos
+        if self.flag5=='o':
+            if depth%2==0:
+                flag='x'
+            else:
+                flag='o'
+        if self.flag5=='x':
+            if depth%2==0:
+                flag='o'
+            else:
+                flag='x'
         childvalues = parentvalues
         if((depth%2)==1):
             temp = (parentvalues[0],parentvalues[1],float("inf"))
@@ -184,7 +208,7 @@ class Player36:
         #         if self.flag5=='o' and os==3:
         #             self.directreturn=1
         #             return ((1000,1000,1000),enemyPos)
-
+        
 
                 
         for j in range(3):
@@ -212,6 +236,11 @@ class Player36:
                     templist.append((position/3,position%3))
         ourBlocks = templist
 
+        #if depth==1:
+            #print ourBlocks,"  1"
+        #if depth==0:
+            #print ourBlocks," 0"
+
         #leaf node
         if(len(ourBlocks)==0):
             p=self.heuristic(board,block,self.flag5)
@@ -219,10 +248,16 @@ class Player36:
             return ((p,p,p),0)
 
         #Final return of heuristic
-        if depth==5:
+        if depth==maxdepth:
             p=self.heuristic(board,block,self.flag5)
             # print p
             # p=random.randint(-100,100)
+            # print board
+            # print
+            # print block
+            # print 
+            # print p
+            # print
             return ((p,p,p),0)
         else:
             for i in range(len(ourBlocks)):
@@ -238,12 +273,15 @@ class Player36:
                             for l in range(9):
                                 for m in range(9):
                                     temp[l][m]=board[l][m]
+                            tempblock = [0 for aaa in range(9)]
+                            for aaa in range(9):
+                                tempblock[aaa]=block[aaa] 
                             # print "childvalues:::",childvalues,enemyPos," ",(j+base_tuple[0],k+base_tuple[1])
                             #Calling minimax recursively
                             # fl = 'x'
                             # if flag=='x':
                             #     fl='o'
-                            rtuple=self.makeMove(temp,block,(j+base_tuple[0],k+base_tuple[1]),depth+1,flag,childvalues)[0]
+                            rtuple=self.makeMove(temp,tempblock,(j+base_tuple[0],k+base_tuple[1]),depth+1,flag,childvalues,maxdepth)[0]
                             if depth%2==0:
                                 temp1=(max(rtuple[2],childvalues[2]),childvalues[1],max(rtuple[2],childvalues[2]))
                                 # childvalues[0]=max(rtuple[0],childvalues[0])
@@ -271,6 +309,15 @@ class Player36:
 
         #Return the max or min values based on level 
         if depth%2==0 and len(miniMaxDict)!=0 and depth==0:
+            maxutility=float("-inf")
+            pointtogo=(1,2)
+            for qqq in range(len(miniMaxDict)):
+                #print maxutility,miniMaxDict.keys()[i][2]
+                if miniMaxDict.keys()[qqq][2]>maxutility:
+                    maxutility=miniMaxDict.keys()[qqq][2]
+                    pointtogo = miniMaxDict.values()[qqq]
+            #print miniMaxDict
+            return (0,pointtogo)
             return sorted(miniMaxDict.items())[len(miniMaxDict)-1]
         else:
             return (childvalues,enemyPos)
@@ -279,16 +326,18 @@ class Player36:
 
     def move(self,board,block,enemyPos,flag):
         #calling minimax funtion
-        print datetime.datetime.now()
+        starttime = datetime.datetime.now()
+        self.flag5=flag
         # if flag=='x':
         #     flag='o'
         # else:
         #     flag='x'
-        self.flag5=flag
         temp=[]
         for i in range(9):
             temp.append(block[i])
-        final=self.makeMove(board,temp,enemyPos,0,flag,(float("-inf"),float("inf"),float("inf")))
+        final=self.makeMove(board,temp,enemyPos,0,flag,(float("-inf"),float("inf"),float("inf")),4)
         print 'Player sign and move',flag,final[1]
-        print datetime.datetime.now()
+        endtime = datetime.datetime.now()
+        runtime = endtime-starttime
+        print runtime
         return final[1]

@@ -103,25 +103,25 @@ class Player76old:
                         if game[baser + q][basec + p] == ('x' if flag == 'o' else 'o'):
                             opc+=1
                     if cr == 3:
-                        captured += 100
+                        captured += 500
                     if cr == 2 and opr == 0:
                         captured += 10
                     if cr == 1 and opr == 0:
                         captured += 1
                     if cc == 3:
-                        captured += 100
+                        captured += 500
                     if cc == 2 and opc == 0:
                         captured += 10
                     if cc == 1 and opc == 0:
                         captured += 1
                     if opr == 3:
-                        captured -= 100
+                        captured -= 500
                     if opr == 2 and cr == 0:
                         captured -= 10
                     if opr == 1 and cr == 0:
                         captured -= 1
                     if opc == 3:
-                        captured -= 100
+                        captured -= 500
                     if opc == 2 and cc == 0:
                         captured -= 10
                     if opc == 1 and cc == 0:
@@ -135,25 +135,25 @@ class Player76old:
                     if game[baser + p][basec + 2 - p] == ('x' if flag == 'o' else 'o'):
                         sdo += 1
                 if pdp == 3:
-                    captured += 100
+                    captured += 500
                 if pdp == 2 and pdo == 0:
                     captured += 10
                 if pdp == 1 and pdo == 0:
                     captured += 1
                 if sdp == 3:
-                    captured += 100
+                    captured += 500
                 if sdp == 2 and sdo == 0:
                     captured += 10
                 if sdp == 1 and sdo == 0:
                     captured += 1
                 if pdo == 3:
-                    captured -= 100
+                    captured -= 500
                 if pdo == 2 and pdp == 0:
                     captured -= 10
                 if pdo == 1 and pdp == 0:
                     captured -= 1
                 if sdo == 3:
-                    captured -= 100
+                    captured -= 500
                 if sdo == 2 and sdp == 0:
                     captured -= 10
                 if sdo == 1 and sdp == 0:
@@ -167,21 +167,21 @@ class Player76old:
                     final_score += 1*(block[i][0])/(10.0)
                 if block[i][1]>0:
                     if i==1:
-                        final_score += 2*(block[i][1])/(10.0)
+                        final_score += 1*(block[i][1])/(10.0)
                     else:
                         final_score += 1*(block[i][1])/(10.0)
                 if block[i][2]>0:
                     final_score += 1*(block[i][2])/(10.0)
                 if block[i][0]>0 and block[i][1]>0:
                     if i==1:
-                        final_score += 20*(block[i][0]*block[i][1])/(10*10.0)
+                        final_score += 10*(block[i][0]*block[i][1])/(10*10.0)
                     else:
                         final_score += 10*(block[i][0]*block[i][1])/(10*10.0)
                 if block[i][0]>0 and block[i][2]>0:
                     final_score += 10*(block[i][0]*block[i][2])/(10*10.0)
                 if block[i][1]>0 and block[i][2]>0:
                     if i==1:
-                        final_score += 20*(block[i][1]*block[i][2])/(10*10.0)
+                        final_score += 10*(block[i][1]*block[i][2])/(10*10.0)
                     else:
                         final_score += 10*(block[i][1]*block[i][2])/(10*10.0)
                 if block[i][0]>0 and block[i][1]>0 and block[i][2]>0:
@@ -195,21 +195,21 @@ class Player76old:
                     final_score += 1*(block[0][i])/(10.0)
                 if block[1][i]>0:
                     if i==1:
-                        final_score += 2*(block[1][i])/(10.0)
+                        final_score += 1*(block[1][i])/(10.0)
                     else:
                         final_score += 1*(block[1][i])/(10.0)
                 if block[2][i]>0:
                     final_score += 1*(block[2][i])/(10.0)
                 if block[0][i]>0 and block[1][i]>0:
                     if i==1:
-                        final_score += 20*(block[0][i]*block[1][i])/(10*10.0)
+                        final_score += 10*(block[0][i]*block[1][i])/(10*10.0)
                     else:
                         final_score += 10*(block[0][i]*block[1][i])/(10*10.0)
                 if block[0][i]>0 and block[2][i]>0:
                     final_score += 10*(block[0][i]*block[2][i])/(10*10.0)
                 if block[1][i]>0 and block[2][i]>0:
                     if i==1:
-                        final_score += 20*(block[1][i]*block[2][i])/(10*10.0)
+                        final_score += 10*(block[1][i]*block[2][i])/(10*10.0)
                     else:
                         final_score += 10*(block[1][i]*block[2][i])/(10*10.0)
                 if block[0][i]>0 and block[1][i]>0 and block[2][i]>0:
@@ -224,21 +224,21 @@ class Player76old:
                     final_score -= 1*(abs(block[i][0]))/(10.0)
                 if block[i][1]<0:
                     if i==1:
-                        final_score -= 2*(abs(block[i][1]))/(10.0)
+                        final_score -= 1*(abs(block[i][1]))/(10.0)
                     else:
                         final_score -= 1*(abs(block[i][1]))/(10.0)
                 if block[i][2]<0:
                     final_score -= 1*(abs(block[i][2]))/(10.0)
                 if block[i][0]<0 and block[i][1]<0:
                     if i==1:
-                        final_score -= 20*(abs(block[i][0])*abs(block[i][1]))/(10*10.0)
+                        final_score -= 10*(abs(block[i][0])*abs(block[i][1]))/(10*10.0)
                     else:
                         final_score -= 10*(abs(block[i][0])*abs(block[i][1]))/(10*10.0)
                 if block[i][0]<0 and block[i][2]<0:
                     final_score -= 10*(abs(block[i][0])*abs(block[i][2]))/(10*10.0)
                 if block[i][1]<0 and block[i][2]<0:
                     if i==1:
-                        final_score -= 20*(abs(block[i][1])*abs(block[i][2]))/(10*10.0)
+                        final_score -= 10*(abs(block[i][1])*abs(block[i][2]))/(10*10.0)
                     else:
                         final_score -= 10*(abs(block[i][1])*abs(block[i][2]))/(10*10.0)
                 if block[i][0]<0 and block[i][1]<0 and block[i][2]<0:
@@ -251,21 +251,21 @@ class Player76old:
                     final_score -= 1*(abs(block[0][i]))/(10.0)
                 if block[1][i]<0:
                     if i==1:
-                        final_score -= 2*(abs(block[1][i]))/(10.0)
+                        final_score -= 1*(abs(block[1][i]))/(10.0)
                     else:
                         final_score -= 1*(abs(block[1][i]))/(10.0)
                 if block[2][i]<0:
                     final_score -= 1*(abs(block[2][i]))/(10.0)
                 if block[0][i]<0 and block[1][i]<0:
                     if i==1:
-                        final_score -= 20*(abs(block[0][i])*abs(block[1][i]))/(10*10.0)
+                        final_score -= 10*(abs(block[0][i])*abs(block[1][i]))/(10*10.0)
                     else:
                         final_score -= 10*(abs(block[0][i])*abs(block[1][i]))/(10*10.0)
                 if block[0][i]<0 and block[2][i]<0:
                     final_score -= 10*(abs(block[0][i])*abs(block[2][i]))/(10*10.0)
                 if block[1][i]<0 and block[2][i]<0:
                     if i==1:
-                        final_score -= 20*(abs(block[1][i])*abs(block[2][i]))/(10*10.0)
+                        final_score -= 10*(abs(block[1][i])*abs(block[2][i]))/(10*10.0)
                     else:
                         final_score -= 10*(abs(block[1][i])*abs(block[2][i]))/(10*10.0)
                 if block[0][i]<0 and block[1][i]<0 and block[2][i]<0:
@@ -279,30 +279,30 @@ class Player76old:
         if block[0][0]>0:
             final_score += 1*(block[0][0])/(10.0)
         if block[1][1]>0:
-            final_score += 2*(block[1][1])/(10.0)
+            final_score += 1*(block[1][1])/(10.0)
         if block[2][2]>0:
             final_score += 1*(block[2][2])/(10.0)
         if block[0][0]>0 and block[1][1]>0:
-            final_score += 20*(block[0][0]*block[1][1])/(10*10.0)
+            final_score += 10*(block[0][0]*block[1][1])/(10*10.0)
         if block[0][0]>0 and block[2][2]>0:
             final_score += 10*(block[0][0]*block[2][2])/(10*10.0)
         if block[1][1]>0 and block[2][2]>0:
-            final_score += 20*(block[1][1]*block[2][2])/(10*10.0)
+            final_score += 10*(block[1][1]*block[2][2])/(10*10.0)
         if block[0][0]>0 and block[1][1]>0 and block[2][2]>0:
             final_score += 500*(block[0][0]*block[1][1]*block[2][2])/(10*10*10.0)
 
         if block[0][0]<0:
             final_score -= 1*(abs(block[0][0]))/(10.0)
         if block[1][1]<0:
-            final_score -= 2*(abs(block[1][1]))/(10.0)
+            final_score -= 1*(abs(block[1][1]))/(10.0)
         if block[2][2]<0:
             final_score -= 1*(abs(block[2][2]))/(10.0)
         if block[0][0]<0 and block[1][1]<0:
-            final_score -= 20*(abs(block[0][0])*abs(block[1][1]))/(10*10.0)
+            final_score -= 10*(abs(block[0][0])*abs(block[1][1]))/(10*10.0)
         if block[0][0]<0 and block[2][2]<0:
             final_score -= 10*(abs(block[0][0])*abs(block[2][2]))/(10*10.0)
         if block[1][1]<0 and block[2][2]<0:
-            final_score -= 20*(abs(block[1][1])*abs(block[2][2]))/(10*10.0)
+            final_score -= 10*(abs(block[1][1])*abs(block[2][2]))/(10*10.0)
         if block[0][0]<0 and block[1][1]<0 and block[2][2]<0:
 	    	final_score -= 500*(abs(block[0][0])*abs(block[1][1])*abs(block[2][2]))/(10*10*10.0)
         
@@ -311,30 +311,30 @@ class Player76old:
         if block[2][0]>0:
             final_score += 1*(block[2][0])/(10.0)
         if block[1][1]>0:
-            final_score += 2*(block[1][1])/(10.0)
+            final_score += 1*(block[1][1])/(10.0)
         if block[0][2]>0:
             final_score += 1*(block[0][2])/(10.0)
         if block[2][0]>0 and block[1][1]>0:
-            final_score += 20*(block[2][0]*block[1][1])/(10*10.0)
+            final_score += 10*(block[2][0]*block[1][1])/(10*10.0)
         if block[2][0]>0 and block[0][2]>0:
             final_score += 10*(block[2][0]*block[0][2])/(10*10.0)
         if block[1][1]>0 and block[0][2]>0:
-            final_score += 20*(block[1][1]*block[0][2])/(10*10.0)
+            final_score += 10*(block[1][1]*block[0][2])/(10*10.0)
         if block[2][0]>0 and block[1][1]>0 and block[0][2]>0:
             final_score += 500*(block[2][0]*block[1][1]*block[0][2])/(10*10*10.0)
 
         if block[2][0]<0:
             final_score -= 1*(abs(block[2][0]))/(10.0)
         if block[1][1]<0:
-            final_score -= 2*(abs(block[1][1]))/(10.0)
+            final_score -= 1*(abs(block[1][1]))/(10.0)
         if block[0][2]<0:
             final_score -= 1*(abs(block[0][2]))/(10.0)
         if block[2][0]<0 and block[1][1]<0:
-            final_score -= 20*(abs(block[2][0])*abs(block[1][1]))/(10*10.0)
+            final_score -= 10*(abs(block[2][0])*abs(block[1][1]))/(10*10.0)
         if block[2][0]<0 and block[0][2]<0:
             final_score -= 10*(abs(block[2][0])*abs(block[0][2]))/(10*10.0)
         if block[1][1]<0 and block[0][2]<0:
-            final_score -= 20*(abs(block[1][1])*abs(block[0][2]))/(10*10.0)
+            final_score -= 10*(abs(block[1][1])*abs(block[0][2]))/(10*10.0)
         if block[2][0]<0 and block[1][1]<0 and block[0][2]<0:
 	    	final_score -= 500*(abs(block[2][0])*abs(block[1][1])*abs(block[0][2]))/(10*10*10.0)
 
@@ -358,10 +358,10 @@ class Player76old:
         if alpha>=beta:
             if player==flag:
                 #Parent is minimizer
-                return 100*self.INF
+                return 1000*self.INF
             else:
                 #Parent is maximizer
-                return -100*self.INF
+                return -1000*self.INF
         #The game is complete (All blocks filled) or if there is a winner of the game, then return the heruistic based cost function values
         if self.board_win('o',game) or self.board_win('x',game) or self.completed_board(game) or depth>=maxdepth: 
             return self.assumedScore(game,depth,player,flag)
@@ -502,6 +502,7 @@ class Player76old:
     	    selected_block = ((previous_move_c)%3+((previous_move_r)%3)*3) #x is the column y is the row
         self.complete = True
         answer = self.minimax(flag,temp_board,0,0,-self.INF,self.INF,selected_block,flag,4)
+        return answer
         t1 = time.clock()
         max_depth = 5
         while t1-self.t0 <= 8:

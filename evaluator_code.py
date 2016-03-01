@@ -18,13 +18,12 @@ import random
 import signal
 import time
 from team76 import Player76
-from team76old1 import Player76old1
 from team76old import Player76old
 from team45 import Player45
 from tempgame import Player36
 from team5 import Player5
-from team80 import Player80
 from team4 import Player4
+from team80 import Player80
 
 def handler(signum, frame):
     #print 'Signal handler called with signal', signum
@@ -73,7 +72,8 @@ class Player2:
 		#Get list of empty valid cells
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
-		obj1 = Player76()
+                obj1 = Player76old()
+                #obj1 = Player76()
                 mvp = obj1.move(temp_board,temp_block,old_move,flag)
                 print 'This is the new me',flag
                 print mvp
