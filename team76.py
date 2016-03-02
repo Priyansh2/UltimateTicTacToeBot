@@ -178,7 +178,7 @@ class Player76:
                     else:
                         final_score += 5*(block[i][0]*block[i][1])/(10*10.0)
                 if block[i][0]>0 and block[i][2]>0:
-                    final_score += 10*(block[i][0]*block[i][2])/(10*10.0)
+                    final_score += 5*(block[i][0]*block[i][2])/(10*10.0)
                 if block[i][1]>0 and block[i][2]>0:
                     if i==1:
                         final_score += 5*(block[i][1]*block[i][2])/(10*10.0)

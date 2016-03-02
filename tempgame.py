@@ -67,6 +67,8 @@ class Player36:
                         ans+=100
                     elif xs==2 and os==0:
                         ans+=10
+                    elif xs==2 and os==1:
+                        ans+=5
                     elif xs==1:
                         ans+=1
 
@@ -74,11 +76,17 @@ class Player36:
                         ans-=100
                     elif os==2 and xs==0:
                         ans-=10
+                    elif os==2 and xs==0:
+                        ans-=5
+                    elif os==1 and xs==0:
+                        ans-=0.5
                 if(flag=='o'):
                     if os==3:
                         ans+=100
                     elif os==2 and xs==0:
                         ans+=10
+                    elif os==2 and xs==1:
+                        ans+=5
                     elif os==1:
                         ans+=1
 
@@ -86,6 +94,10 @@ class Player36:
                         ans-=100
                     elif xs==2 and os==0:
                         ans-=10
+                    elif xs==2 and os==1:
+                        ans-=5
+                    elif xs==1 and os==0:
+                        ans-=0.5
             temp[i/3][i%3]=ans
             # print
             # print ans,blocks[i]
@@ -118,6 +130,16 @@ class Player36:
                 ans-=100
             if flag=='o' and xs==2 and os==0:
                 ans-=100
+
+            # if flag=='o' and xs==1 and os==0:
+            #     ans-=10
+            if flag=='x' and xs==1 and os==0:
+                ans=10
+            # if flag=='o' and xs==0 and os==1:
+            #     ans=10
+            if flag=='x' and xs==0 and os==1:
+                ans-=10
+            
             if (tempans>1 and tempans<10):
                 ans+=1+((tempans-1)*9)
             elif (tempans>10 and tempans<100):
@@ -236,10 +258,10 @@ class Player36:
                     templist.append((position/3,position%3))
         ourBlocks = templist
 
-        #if depth==1:
-            #print ourBlocks,"  1"
-        #if depth==0:
-            #print ourBlocks," 0"
+        # if depth==1:
+        #     print ourBlocks,"  1"
+        # if depth==0:
+        #     print ourBlocks," 0"
 
         #leaf node
         if(len(ourBlocks)==0):
@@ -312,13 +334,13 @@ class Player36:
             maxutility=float("-inf")
             pointtogo=(1,2)
             for qqq in range(len(miniMaxDict)):
-                #print maxutility,miniMaxDict.keys()[i][2]
+                # print maxutility,miniMaxDict.keys()[i][2]
                 if miniMaxDict.keys()[qqq][2]>maxutility:
                     maxutility=miniMaxDict.keys()[qqq][2]
                     pointtogo = miniMaxDict.values()[qqq]
-            #print miniMaxDict
+            # print miniMaxDict
             return (0,pointtogo)
-            return sorted(miniMaxDict.items())[len(miniMaxDict)-1]
+            #return sorted(miniMaxDict.items())[len(miniMaxDict)-1]
         else:
             return (childvalues,enemyPos)
         # if depth%2==1 and len(miniMaxDict)!=0:
