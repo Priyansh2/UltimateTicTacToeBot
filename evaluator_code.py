@@ -20,7 +20,7 @@ import time
 import team53
 from team76 import Player76
 from team76old import Player76old
-from old45 import Player45
+from backup import Player45
 from tempgame import Player36
 from team5 import Player5
 from team4 import Player4
@@ -49,7 +49,7 @@ class Player1:
 	
 	def __init__(self):
 		# You may initialize your object here and use any variables for storing throughout the game
-		self.obj1 = Player80()
+		self.obj1 = Player45()
 
 	def move(self,temp_board,temp_block,old_move,flag):
 		#List of permitted blocks, based on old move.

@@ -10,7 +10,7 @@ from random import shuffle
 class Player76old:
 
     def __init__(self):
-        self.INF = 1000000000000
+        self.INF = 1000000000000000000
         self.t0 = 0
         self.complete = False
 
@@ -65,23 +65,20 @@ class Player76old:
     #HEURISTIC - DOESNT WORK WELL!
     def assumedScore(self,game,depth,player,flag):
         depth = min(depth, 85)
-        in1 = 3
-        in2 = 30
-        in3 = 300
-        in1op = 3
-        in2op = 30
-        in3op = 300
+        in1 = 1
+        in2 = 10
+        in3 = 100
+        in1op = in1
+        in2op = in2
+        in3op = in3
         out1 = 1
-        out2 = 1
-        out3 = 1
-        out1op = 1
-        out2op = 1
-        out3op = 1
+        out2 = 10
+        out3 = 100
         final_score = 0.0
         if self.board_win(flag,game):
-            return self.INF * ((85-depth)/depth) * ((85-depth)/depth)
+            return self.INF * (1.0/depth)
         elif self.board_win(('x' if flag == 'o' else 'o'),game):
-            return -self.INF * ((85-depth)/depth) * ((85-depth)/depth)
+            return -self.INF * (1.0/depth)
         block = [[0,0,0],[0,0,0],[0,0,0]]
         finished = [[0,0,0],[0,0,0],[0,0,0]]
         for i in range(0,3):
@@ -230,216 +227,196 @@ class Player76old:
                     if game[br+2][bc+0]==flagop and game[br+1][bc+1]==flagop and game[br+0][bc+2]==flagop:
                         captured -= in3op
 
-                block[i][j] = captured
+                if captured>0:
+                    block[i][j] = min(in3,captured)
+                else:
+                    block[i][j] = max(-in3,captured)
+                block[i][j]*=(1.0/in3)
 
         #print block
 
         for i in range(0,3):
             if (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0) and (finished[i][2]==1 or finished[i][2]==0):
-                if block[i][0]>0 and block[i][1]>0 and block[i][2]>0:
-                    final_score += out3*block[i][0]*block[i][1]*block[i][2]
-                if block[i][0]>0 and block[i][1]>0:
-                    if block[i][2]<0:
-                        final_score += out2*(block[i][0]*block[i][1])/abs(block[i][2])
+                cur_val = block[i][0]+block[i][1]+block[i][2]
+                if cur_val >= 0:
+                    if cur_val >= 3.0:
+                        final_score += out3
+                    elif cur_val >= 2.0:
+                        final_score += out2 + (cur_val-2.0)*(out3-out2)
+                    elif cur_val >= 1.0:
+                        final_score += out1 + (cur_val-1.0)*(out2-out1)
                     else:
-                        final_score += out2*(block[i][0]*block[i][1])
-                if block[i][0]>0 and block[i][2]>0:
-                    if block[i][1]<0:
-                        final_score += out2*(block[i][0]*block[i][2])/abs(block[i][1])
+                        final_score += cur_val*out1
+                else:
+                    cur_val = abs(cur_val)
+                    if cur_val >= 3.0:
+                        final_score -= out3
+                    elif cur_val >= 2.0:
+                        final_score -= out2 + (cur_val-2.0)*(out3-out2)
+                    elif cur_val >= 1.0:
+                        final_score -= out1 + (cur_val-1.0)*(out2-out1)
                     else:
-                        final_score += out2*(block[i][0]*block[i][2])
-                if block[i][1]>0 and block[i][2]>0:
-                    if block[i][0]<0:
-                        final_score += out2*(block[i][1]*block[i][2])/abs(block[i][0])
-                    else:
-                        final_score += out2*(block[i][1]*block[i][2])
-                if block[i][0]>0:
-                    final_score += out1*block[i][0]
-                if block[i][1]>0:
-                    final_score += out1*block[i][1]
-                if block[i][2]>0:
-                    final_score += out1*block[i][2]
+                        final_score -= cur_val*out1
 
-            if (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
-                if block[i][0]<0 and block[i][1]<0 and block[i][2]<0:
-                    final_score -= out3op*abs(block[i][0]*block[i][1]*block[i][2])
-                if block[i][0]<0 and block[i][1]<0:
-                    if block[i][2]>0:
-                        final_score -= out2op*abs(block[i][0]*block[i][1])/abs(block[i][2])
+            elif (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
+                cur_val = block[i][0]+block[i][1]+block[i][2]
+                if cur_val >= 0:
+                    if cur_val >= 3.0:
+                        final_score += out3
+                    elif cur_val >= 2.0:
+                        final_score += out2 + (cur_val-2.0)*(out3-out2)
+                    elif cur_val >= 1.0:
+                        final_score += out1 + (cur_val-1.0)*(out2-out1)
                     else:
-                        final_score -= out2op*abs(block[i][0]*block[i][1])
-                if block[i][0]<0 and block[i][2]<0:
-                    if block[i][1]>0:
-                        final_score -= out2op*abs(block[i][0]*block[i][2])/abs(block[i][1])
+                        final_score += cur_val*out1
+                else:
+                    cur_val = abs(cur_val)
+                    if cur_val >= 3.0:
+                        final_score -= out3
+                    elif cur_val >= 2.0:
+                        final_score -= out2 + (cur_val-2.0)*(out3-out2)
+                    elif cur_val >= 1.0:
+                        final_score -= out1 + (cur_val-1.0)*(out2-out1)
                     else:
-                        final_score -= out2op*abs(block[i][0]*block[i][2])
-                if block[i][1]<0 and block[i][2]<0:
-                    if block[i][0]>0:
-                        final_score -= out2op*abs(block[i][1]*block[i][2])/abs(block[i][0])
-                    else:
-                        final_score -= out2op*abs(block[i][1]*block[i][2])
-                if block[i][0]<0:
-                    final_score -= out1op*abs(block[i][0])
-                if block[i][1]<0:
-                    final_score -= out1op*abs(block[i][1])
-                if block[i][2]<0:
-                    final_score -= out1op*abs(block[i][2])
+                        final_score -= cur_val*out1
 
             if (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
-                if block[0][i]>0 and block[1][i]>0 and block[2][i]>0:
-                    final_score += out3*block[0][i]*block[i][1]*block[2][i]
-                if block[0][i]>0 and block[1][i]>0:
-                    if block[2][i]<0:
-                        final_score += out2*(block[0][i]*block[1][i])/abs(block[2][i])
+                cur_val = block[0][i]+block[1][i]+block[2][i]
+                if cur_val >= 0:
+                    if cur_val >= 3.0:
+                        final_score += out3
+                    elif cur_val >= 2.0:
+                        final_score += out2 + (cur_val-2.0)*(out3-out2)
+                    elif cur_val >= 1.0:
+                        final_score += out1 + (cur_val-1.0)*(out2-out1)
                     else:
-                        final_score += out2*(block[0][i]*block[1][i])
-                if block[0][i]>0 and block[2][i]>0:
-                    if block[1][i]<0:
-                        final_score += out2*(block[0][i]*block[2][i])/abs(block[1][i])
+                        final_score += cur_val*out1
+                else:
+                    cur_val = abs(cur_val)
+                    if cur_val >= 3.0:
+                        final_score -= out3
+                    elif cur_val >= 2.0:
+                        final_score -= out2 + (cur_val-2.0)*(out3-out2)
+                    elif cur_val >= 1.0:
+                        final_score -= out1 + (cur_val-1.0)*(out2-out1)
                     else:
-                        final_score += out2*(block[0][i]*block[2][i])
-                if block[1][i]>0 and block[2][i]>0:
-                    if block[0][i]<0:
-                        final_score += out2*(block[1][i]*block[2][i])/abs(block[0][i])
-                    else:
-                        final_score += out2*(block[1][i]*block[2][i])
-                if block[0][i]>0:
-                    final_score += out1*block[0][i]
-                if block[1][i]>0:
-                    final_score += out1*block[1][i]
-                if block[2][i]>0:
-                    final_score += out1*block[2][i]
+                        final_score -= cur_val*out1
             
-            if (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
-                if block[0][i]<0 and block[1][i]<0 and block[2][i]<0:
-                    final_score -= out3op*abs(block[0][i]*block[1][i]*block[2][i])
-                if block[0][i]<0 and block[1][i]<0:
-                    if block[1][i]>0:
-                        final_score -= out2op*abs(block[0][i]*block[1][i])/abs(block[2][i])
+            elif (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
+                cur_val = block[0][i]+block[1][i]+block[2][i]
+                if cur_val >= 0:
+                    if cur_val >= 3.0:
+                        final_score += out3
+                    elif cur_val >= 2.0:
+                        final_score += out2 + (cur_val-2.0)*(out3-out2)
+                    elif cur_val >= 1.0:
+                        final_score += out1 + (cur_val-1.0)*(out2-out1)
                     else:
-                        final_score -= out2op*abs(block[0][i]*block[1][i])
-                if block[0][i]<0 and block[2][i]<0:
-                    if block[1][i]>0:
-                        final_score -= out2op*abs(block[0][i]*block[2][i])/abs(block[1][i])
+                        final_score += cur_val*out1
+                else:
+                    cur_val = abs(cur_val)
+                    if cur_val >= 3.0:
+                        final_score -= out3
+                    elif cur_val >= 2.0:
+                        final_score -= out2 + (cur_val-2.0)*(out3-out2)
+                    elif cur_val >= 1.0:
+                        final_score -= out1 + (cur_val-1.0)*(out2-out1)
                     else:
-                        final_score -= out2op*abs(block[0][i]*block[2][i])
-                if block[1][i]<0 and block[2][i]<0:
-                    if block[0][i]>0:
-                        final_score -= out2op*abs(block[1][i]*block[2][i])/abs(block[0][i])
-                    else:
-                        final_score -= out2op*abs(block[1][i]*block[2][i])
-                if block[0][i]<0:
-                    final_score -= out1op*abs(block[0][i])
-                if block[1][i]<0:
-                    final_score -= out1op*abs(block[1][i])
-                if block[2][i]<0:
-                    final_score -= out1op*abs(block[2][i])
+                        final_score -= cur_val*out1
 
         #DIAGONAL 1
 
         if (finished[0][0]==1 or finished[0][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[2][2]==1 or finished[2][2]==0):
-            if block[0][0]>0 and block[1][1]>0 and block[2][2]>0:
-                final_score += out3*block[0][0]*block[1][1]*block[2][2]
-            if block[0][0]>0 and block[1][1]>0:
-                if block[2][2]<0:
-                    final_score += out2*(block[0][0]*block[1][1])/abs(block[2][2])
+            cur_val = block[0][0]+block[1][1]+block[2][2]
+            if cur_val >= 0:
+                if cur_val >= 3.0:
+                    final_score += out3
+                elif cur_val >= 2.0:
+                    final_score += out2 + (cur_val-2.0)*(out3-out2)
+                elif cur_val >= 1.0:
+                    final_score += out1 + (cur_val-1.0)*(out2-out1)
                 else:
-                    final_score += out2*(block[0][0]*block[1][1])
-            if block[0][0]>0 and block[2][2]>0:
-                if block[1][1]<0:
-                    final_score += out2*(block[0][0]*block[2][2])/abs(block[1][1])
+                    final_score += cur_val*out1
+            else:
+                cur_val = abs(cur_val)
+                if cur_val >= 3.0:
+                    final_score -= out3
+                elif cur_val >= 2.0:
+                    final_score -= out2 + (cur_val-2.0)*(out3-out2)
+                elif cur_val >= 1.0:
+                    final_score -= out1 + (cur_val-1.0)*(out2-out1)
                 else:
-                    final_score += out2*(block[0][0]*block[2][2])
-            if block[1][1]>0 and block[2][2]>0:
-                if block[0][0]<0:
-                    final_score += out2*(block[1][1]*block[2][2])/abs(block[0][0])
-                else:
-                    final_score += out2*(block[1][1]*block[2][2])
-            if block[0][0]>0:
-                final_score += out1*block[0][0]
-            if block[1][1]>0:
-                final_score += out1*block[1][1]
-            if block[2][2]>0:
-                final_score += out1*block[2][2]
+                    final_score -= cur_val*out1
 
-        if (finished[0][0]==2 or finished[0][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[2][2]==2 or finished[2][2]==0):
-            if block[0][0]<0 and block[1][1]<0 and block[2][2]<0:
-                final_score -= out3op*abs(block[0][0]*block[1][1]*block[2][2])
-            if block[0][0]<0 and block[1][1]<0:
-                if block[2][2]>0:
-                    final_score -= out2op*abs(block[0][0]*block[1][1])/abs(block[2][2])
+        elif (finished[0][0]==2 or finished[0][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[2][2]==2 or finished[2][2]==0):
+            cur_val = block[0][0]+block[1][1]+block[2][2]
+            if cur_val >= 0:
+                if cur_val >= 3.0:
+                    final_score += out3
+                elif cur_val >= 2.0:
+                    final_score += out2 + (cur_val-2.0)*(out3-out2)
+                elif cur_val >= 1.0:
+                    final_score += out1 + (cur_val-1.0)*(out2-out1)
                 else:
-                    final_score -= out2op*abs(block[0][0]*block[1][1])
-            if block[0][0]<0 and block[2][2]<0:
-                if block[1][1]>0:
-                    final_score -= out2op*abs(block[0][0]*block[2][2])/abs(block[1][1])
+                    final_score += cur_val*out1
+            else:
+                cur_val = abs(cur_val)
+                if cur_val >= 3.0:
+                    final_score -= out3
+                elif cur_val >= 2.0:
+                    final_score -= out2 + (cur_val-2.0)*(out3-out2)
+                elif cur_val >= 1.0:
+                    final_score -= out1 + (cur_val-1.0)*(out2-out1)
                 else:
-                    final_score -= out2op*abs(block[0][0]*block[2][2])
-            if block[1][1]<0 and block[2][2]<0:
-                if block[0][0]>0:
-                    final_score -= out2op*abs(block[1][1]*block[2][2])/abs(block[0][0])
-                else:
-                    final_score -= out2op*abs(block[1][1]*block[2][2])
-            if block[0][0]<0:
-                final_score -= out1op*abs(block[0][0])
-            if block[1][1]<0:
-                final_score -= out1op*abs(block[1][1])
-            if block[2][2]<0:
-                final_score -= out1op*abs(block[2][2])
-        
+                    final_score -= cur_val*out1     
         #DIAGONAL 2
 
         if (finished[2][0]==1 or finished[2][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[0][2]==1 or finished[0][2]==0):
-            if block[2][0]>0 and block[1][1]>0 and block[0][2]>0:
-                final_score += out3*block[2][0]*block[1][1]*block[0][2]
-            if block[2][0]>0 and block[1][1]>0:
-                if block[0][2]<0:
-                    final_score += out2*(block[2][0]*block[1][1])/abs(block[0][2])
+            cur_val = block[2][0]+block[1][1]+block[0][2]
+            if cur_val >= 0:
+                if cur_val >= 3.0:
+                    final_score += out3
+                elif cur_val >= 2.0:
+                    final_score += out2 + (cur_val-2.0)*(out3-out2)
+                elif cur_val >= 1.0:
+                    final_score += out1 + (cur_val-1.0)*(out2-out1)
                 else:
-                    final_score += out2*(block[2][0]*block[1][1])
-            if block[2][0]>0 and block[0][2]>0:
-                if block[1][1]<0:
-                    final_score += out2*(block[2][0]*block[0][2])/abs(block[1][1])
+                    final_score += cur_val*out1
+            else:
+                cur_val = abs(cur_val)
+                if cur_val >= 3.0:
+                    final_score -= out3
+                elif cur_val >= 2.0:
+                    final_score -= out2 + (cur_val-2.0)*(out3-out2)
+                elif cur_val >= 1.0:
+                    final_score -= out1 + (cur_val-1.0)*(out2-out1)
                 else:
-                    final_score += out2*(block[2][0]*block[0][2])
-            if block[1][1]>0 and block[0][2]>0:
-                if block[2][0]<0:
-                    final_score += out2*(block[1][1]*block[0][2])/abs(block[2][0])
-                else:
-                    final_score += out2*(block[1][1]*block[0][2])
-            if block[2][0]>0:
-                final_score += out1*block[2][0]
-            if block[1][1]>0:
-                final_score += out1*block[1][1]
-            if block[0][2]>0:
-                final_score += out1*block[0][2]
+                    final_score -= cur_val*out1
 
-        if (finished[2][0]==2 or finished[2][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[0][2]==2 or finished[0][2]==0):
-            if block[2][0]<0 and block[1][1]<0 and block[0][2]<0:
-                final_score -= out3op*abs(block[2][0]*block[1][1]*block[0][2])
-            if block[2][0]<0 and block[1][1]<0:
-                if block[0][2]>0:
-                    final_score -= out2op*abs(block[2][0]*block[1][1])/abs(block[0][2])
+        elif (finished[2][0]==2 or finished[2][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[0][2]==2 or finished[0][2]==0):
+            cur_val = block[2][0]+block[1][1]+block[0][2]
+            if cur_val >= 0:
+                if cur_val >= 3.0:
+                    final_score += out3
+                elif cur_val >= 2.0:
+                    final_score += out2 + (cur_val-2.0)*(out3-out2)
+                elif cur_val >= 1.0:
+                    final_score += out1 + (cur_val-1.0)*(out2-out1)
                 else:
-                    final_score -= out2op*abs(block[2][0]*block[1][1])
-            if block[2][0]<0 and block[0][2]<0:
-                if block[1][1]>0:
-                    final_score -= out2op*abs(block[2][0]*block[0][2])/abs(block[1][1])
+                    final_score += cur_val*out1
+            else:
+                cur_val = abs(cur_val)
+                if cur_val >= 3.0:
+                    final_score -= out3
+                elif cur_val >= 2.0:
+                    final_score -= out2 + (cur_val-2.0)*(out3-out2)
+                elif cur_val >= 1.0:
+                    final_score -= out1 + (cur_val-1.0)*(out2-out1)
                 else:
-                    final_score -= out2op*abs(block[2][0]*block[0][2])
-            if block[1][1]<0 and block[0][2]<0:
-                if block[2][0]>0:
-                    final_score -= out2op*abs(block[1][1]*block[0][2])/abs(block[2][0])
-                else:
-                    final_score -= out2op*abs(block[1][1]*block[0][2])
-            if block[2][0]<0:
-                final_score -= out1op*abs(block[2][0])
-            if block[1][1]<0:
-                final_score -= out1op*abs(block[1][1])
-            if block[0][2]<0:
-                final_score -= out1op*abs(block[0][2])
-
-        final_score = final_score * ((85-depth)/depth)
+                    final_score -= cur_val*out1
+                    
+        #print block
+        final_score = final_score * (1.0/depth)
         return final_score
 
     def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth):
