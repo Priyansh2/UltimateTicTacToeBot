@@ -444,6 +444,7 @@ class Player76old:
         if time.clock() - self.t0 >=9 and firstcall != 0:
             self.complete = False
             return self.assumedScore(game,depth,player,flag)
+
         if alpha>=beta:
             if player==flag:
                 #Parent is minimizer
@@ -583,6 +584,7 @@ class Player76old:
     	return ret_string
 
     def move(self, temp_board, temp_block, old_move, flag):
+        self.__init__()
         self.t0 = time.clock()
         previous_move_r, previous_move_c = old_move[0], old_move[1]
     	if previous_move_c==-1 and previous_move_r==-1:
