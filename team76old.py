@@ -260,7 +260,7 @@ class Player76old:
                     if block[i][1]>0:
                         final_score -= abs(block[i][0]*block[i][2])/abs(block[i][1])
                     else:
-                        final_score += abs(block[i][0]*block[i][2])
+                        final_score -= abs(block[i][0]*block[i][2])
                 if block[i][1]<0 and block[i][2]<0:
                     if block[i][0]>0:
                         final_score -= abs(block[i][1]*block[i][2])/abs(block[i][0])
@@ -298,7 +298,7 @@ class Player76old:
                 if block[2][i]>0:
                     final_score += block[2][i]
             
-            elif (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
+            if (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
                 if block[0][i]<0 and block[1][i]<0 and block[2][i]<0:
                     final_score -= abs(block[0][i]*block[1][i]*block[2][i])
                 if block[0][i]<0 and block[1][i]<0:
@@ -310,7 +310,7 @@ class Player76old:
                     if block[1][i]>0:
                         final_score -= abs(block[0][i]*block[2][i])/abs(block[1][i])
                     else:
-                        final_score += abs(block[0][i]*block[2][i])
+                        final_score -= abs(block[0][i]*block[2][i])
                 if block[1][i]<0 and block[2][i]<0:
                     if block[0][i]>0:
                         final_score -= abs(block[1][i]*block[2][i])/abs(block[0][i])
@@ -350,7 +350,7 @@ class Player76old:
             if block[2][2]>0:
                 final_score += block[2][2]
 
-        elif (finished[0][0]==2 or finished[0][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[2][2]==2 or finished[2][2]==0):
+        if (finished[0][0]==2 or finished[0][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[2][2]==2 or finished[2][2]==0):
             if block[0][0]<0 and block[1][1]<0 and block[2][2]<0:
                 final_score -= abs(block[0][0]*block[1][1]*block[2][2])
             if block[0][0]<0 and block[1][1]<0:
@@ -362,7 +362,7 @@ class Player76old:
                 if block[1][1]>0:
                     final_score -= abs(block[0][0]*block[2][2])/abs(block[1][1])
                 else:
-                    final_score += abs(block[0][0]*block[2][2])
+                    final_score -= abs(block[0][0]*block[2][2])
             if block[1][1]<0 and block[2][2]<0:
                 if block[0][0]>0:
                     final_score -= abs(block[1][1]*block[2][2])/abs(block[0][0])
@@ -402,7 +402,7 @@ class Player76old:
             if block[0][2]>0:
                 final_score += block[0][2]
 
-        elif (finished[2][0]==2 or finished[2][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[0][2]==2 or finished[0][2]==0):
+        if (finished[2][0]==2 or finished[2][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[0][2]==2 or finished[0][2]==0):
             if block[2][0]<0 and block[1][1]<0 and block[0][2]<0:
                 final_score -= abs(block[2][0]*block[1][1]*block[0][2])
             if block[2][0]<0 and block[1][1]<0:
@@ -414,7 +414,7 @@ class Player76old:
                 if block[1][1]>0:
                     final_score -= abs(block[2][0]*block[0][2])/abs(block[1][1])
                 else:
-                    final_score += abs(block[2][0]*block[0][2])
+                    final_score -= abs(block[2][0]*block[0][2])
             if block[1][1]<0 and block[0][2]<0:
                 if block[2][0]>0:
                     final_score -= abs(block[1][1]*block[0][2])/abs(block[2][0])

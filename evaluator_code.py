@@ -19,7 +19,8 @@ import signal
 import time
 from team76 import Player76
 from team76old import Player76old
-from team45 import Player45
+#from team45 import Player45
+from old45 import Player45
 from tempgame import Player36
 from team5 import Player5
 from team4 import Player4
@@ -56,7 +57,7 @@ class Player1:
 		#Get list of empty valid cells
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
-		obj1 = Player3()
+		obj1 = Player45()
                 #obj1 = Player36()
                 mvp = obj1.move(temp_board,temp_block,old_move,flag)
                 return (int(mvp[0]), int(mvp[1]))
