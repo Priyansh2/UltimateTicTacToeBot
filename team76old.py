@@ -65,10 +65,18 @@ class Player76old:
     #HEURISTIC - DOESNT WORK WELL!
     def assumedScore(self,game,depth,player,flag):
         depth = min(depth, 85)
-        in1 = 1
-        in2 = 10
-        in3 = 100
-        out3 = 100
+        in1 = 3
+        in2 = 30
+        in3 = 300
+        in1op = 3
+        in2op = 30
+        in3op = 300
+        out1 = 100
+        out2 = 10
+        out3 = 1
+        out1op = 100
+        out2op = 10
+        out3op = 1
         if self.board_win(flag,game):
             return self.INF * ((85-depth)/depth) * ((85-depth)/depth)
         elif self.board_win(('x' if flag == 'o' else 'o'),game):
@@ -107,19 +115,19 @@ class Player76old:
                             captured += in3
                     if (game[br+ii][bc+0]==flagop or game[br+ii][bc+0]=='-') and (game[br+ii][bc+1]==flagop or game[br+ii][bc+1]=='-') and (game[br+ii][bc+2]==flagop or game[br+ii][bc+2]=='-'):
                         if game[br+ii][bc+0]==flagop:
-                            captured -= in1
+                            captured -= in1op
                         if game[br+ii][bc+1]==flagop:
-                            captured -= in1
+                            captured -= in1op
                         if game[br+ii][bc+2]==flagop:
-                            captured -= in1
+                            captured -= in1op
                         if game[br+ii][bc+0]==flagop and game[br+ii][bc+1]==flagop:
-                            captured -= in2
+                            captured -= in2op
                         if game[br+ii][bc+0]==flagop and game[br+ii][bc+2]==flagop:
-                            captured -= in2
+                            captured -= in2op
                         if game[br+ii][bc+1]==flagop and game[br+ii][bc+2]==flagop:
-                            captured -= in2
+                            captured -= in2op
                         if game[br+ii][bc+0]==flagop and game[br+ii][bc+1]==flagop and game[br+ii][bc+2]==flagop:
-                            captured -= in3
+                            captured -= in3op
 
                     if (game[br+0][bc+ii]==flag or game[br+0][bc+ii]=='-') and (game[br+1][bc+ii]==flag or game[br+1][bc+ii]=='-') and (game[br+2][bc+ii]==flag or game[br+2][bc+ii]=='-'):
                         if game[br+0][bc+ii]==flag:
@@ -139,19 +147,19 @@ class Player76old:
                         
                     if (game[br+0][bc+ii]==flagop or game[br+0][bc+ii]=='-') and (game[br+1][bc+ii]==flagop or game[br+1][bc+ii]=='-') and (game[br+2][bc+ii]==flagop or game[br+2][bc+ii]=='-'):
                         if game[br+0][bc+ii]==flagop:
-                            captured -= in1
+                            captured -= in1op
                         if game[br+1][bc+ii]==flagop:
-                            captured -= in1
+                            captured -= in1op
                         if game[br+2][bc+ii]==flagop:
-                            captured -= in1
+                            captured -= in1op
                         if game[br+0][bc+ii]==flagop and game[br+1][bc+ii]==flagop:
-                            captured -= in2
+                            captured -= in2op
                         if game[br+0][bc+ii]==flagop and game[br+2][bc+ii]==flagop:
-                            captured -= in2
+                            captured -= in2op
                         if game[br+1][bc+ii]==flagop and game[br+2][bc+ii]==flagop:
-                            captured -= in2
+                            captured -= in2op
                         if game[br+0][bc+ii]==flagop and game[br+1][bc+ii]==flagop and game[br+2][bc+ii]==flagop:
-                            captured -= in3
+                            captured -= in3op
 
                 #DIAGONAL 1
                 if (game[br+0][bc+0]==flag or game[br+0][bc+0]=='-') and (game[br+1][bc+1]==flag or game[br+1][bc+1]=='-') and (game[br+2][bc+2]==flag or game[br+2][bc+2]=='-'):
@@ -172,19 +180,19 @@ class Player76old:
 
                 if (game[br+0][bc+0]==flagop or game[br+0][bc+0]=='-') and (game[br+1][bc+1]==flagop or game[br+1][bc+1]=='-') and (game[br+2][bc+2]==flagop or game[br+2][bc+2]=='-'):
                     if game[br+0][bc+0]==flagop:
-                        captured -= in1
+                        captured -= in1op
                     if game[br+1][bc+1]==flagop:
-                        captured -= in1
+                        captured -= in1op
                     if game[br+2][bc+2]==flagop:
-                        captured -= in1
+                        captured -= in1op
                     if game[br+0][bc+0]==flagop and game[br+1][bc+1]==flagop:
-                        captured -= in2
+                        captured -= in2op
                     if game[br+1][bc+1]==flagop and game[br+2][bc+2]==flagop:
-                        captured -= in2
+                        captured -= in2op
                     if game[br+0][bc+0]==flagop and game[br+2][bc+2]==flagop:
-                        captured -= in2
+                        captured -= in2op
                     if game[br+0][bc+0]==flagop and game[br+1][bc+1]==flagop and game[br+2][bc+2]==flagop:
-                        captured -= in3
+                        captured -= in3op
                 
                 #DIAGONAL 2
                 if (game[br+2][bc+0]==flag or game[br+2][bc+0]=='-') and (game[br+1][bc+1]==flag or game[br+1][bc+1]=='-') and (game[br+0][bc+2]==flag or game[br+0][bc+2]=='-'):
@@ -205,229 +213,231 @@ class Player76old:
 
                 if (game[br+2][bc+0]==flagop or game[br+2][bc+0]=='-') and (game[br+1][bc+1]==flagop or game[br+1][bc+1]=='-') and (game[br+0][bc+2]==flagop or game[br+0][bc+2]=='-'):
                     if game[br+2][bc+0]==flagop:
-                        captured -= in1
+                        captured -= in1op
                     if game[br+1][bc+1]==flagop:
-                        captured -= in1
+                        captured -= in1op
                     if game[br+0][bc+2]==flagop:
-                        captured -= in1
+                        captured -= in1op
                     if game[br+2][bc+0]==flagop and game[br+1][bc+1]==flagop:
-                        captured -= in2
+                        captured -= in2op
                     if game[br+1][bc+1]==flagop and game[br+0][bc+2]==flagop:
-                        captured -= in2
+                        captured -= in2op
                     if game[br+2][bc+0]==flagop and game[br+0][bc+2]==flagop:
-                        captured -= in2
+                        captured -= in2op
                     if game[br+2][bc+0]==flagop and game[br+1][bc+1]==flagop and game[br+0][bc+2]==flagop:
-                        captured -= in3
+                        captured -= in3op
 
                 block[i][j] = captured
+
+        #print block
 
         final_score = 0.0
         for i in range(0,3):
             if (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0) and (finished[i][2]==1 or finished[i][2]==0):
                 if block[i][0]>0 and block[i][1]>0 and block[i][2]>0:
-                    final_score += block[i][0]*block[i][1]*block[i][2]
+                    final_score += out3*block[i][0]*block[i][1]*block[i][2]
                 if block[i][0]>0 and block[i][1]>0:
                     if block[i][2]<0:
-                        final_score += (block[i][0]*block[i][1])/abs(block[i][2])
+                        final_score += out2*(block[i][0]*block[i][1])/abs(block[i][2])
                     else:
-                        final_score += (block[i][0]*block[i][1])
+                        final_score += out2*(block[i][0]*block[i][1])
                 if block[i][0]>0 and block[i][2]>0:
                     if block[i][1]<0:
-                        final_score += (block[i][0]*block[i][2])/abs(block[i][1])
+                        final_score += out2*(block[i][0]*block[i][2])/abs(block[i][1])
                     else:
-                        final_score += (block[i][0]*block[i][2])
+                        final_score += out2*(block[i][0]*block[i][2])
                 if block[i][1]>0 and block[i][2]>0:
                     if block[i][0]<0:
-                        final_score += (block[i][1]*block[i][2])/abs(block[i][0])
+                        final_score += out2*(block[i][1]*block[i][2])/abs(block[i][0])
                     else:
-                        final_score += (block[i][1]*block[i][2])
+                        final_score += out2*(block[i][1]*block[i][2])
                 if block[i][0]>0:
-                    final_score += block[i][0]
+                    final_score += out1*block[i][0]
                 if block[i][1]>0:
-                    final_score += block[i][1]
+                    final_score += out1*block[i][1]
                 if block[i][2]>0:
-                    final_score += block[i][2]
+                    final_score += out1*block[i][2]
 
             if (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
                 if block[i][0]<0 and block[i][1]<0 and block[i][2]<0:
-                    final_score -= abs(block[i][0]*block[i][1]*block[i][2])
+                    final_score -= out3op*abs(block[i][0]*block[i][1]*block[i][2])
                 if block[i][0]<0 and block[i][1]<0:
                     if block[i][2]>0:
-                        final_score -= abs(block[i][0]*block[i][1])/abs(block[i][2])
+                        final_score -= out2op*abs(block[i][0]*block[i][1])/abs(block[i][2])
                     else:
-                        final_score -= abs(block[i][0]*block[i][1])
+                        final_score -= out2op*abs(block[i][0]*block[i][1])
                 if block[i][0]<0 and block[i][2]<0:
                     if block[i][1]>0:
-                        final_score -= abs(block[i][0]*block[i][2])/abs(block[i][1])
+                        final_score -= out2op*abs(block[i][0]*block[i][2])/abs(block[i][1])
                     else:
-                        final_score -= abs(block[i][0]*block[i][2])
+                        final_score -= out2op*abs(block[i][0]*block[i][2])
                 if block[i][1]<0 and block[i][2]<0:
                     if block[i][0]>0:
-                        final_score -= abs(block[i][1]*block[i][2])/abs(block[i][0])
+                        final_score -= out2op*abs(block[i][1]*block[i][2])/abs(block[i][0])
                     else:
-                        final_score -= abs(block[i][1]*block[i][2])
+                        final_score -= out2op*abs(block[i][1]*block[i][2])
                 if block[i][0]<0:
-                    final_score -= abs(block[i][0])
+                    final_score -= out1op*abs(block[i][0])
                 if block[i][1]<0:
-                    final_score -= abs(block[i][1])
+                    final_score -= out1op*abs(block[i][1])
                 if block[i][2]<0:
-                    final_score -= abs(block[i][2])
+                    final_score -= out1op*abs(block[i][2])
 
             if (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
                 if block[0][i]>0 and block[1][i]>0 and block[2][i]>0:
-                    final_score += block[0][i]*block[i][1]*block[2][i]
+                    final_score += out3*block[0][i]*block[i][1]*block[2][i]
                 if block[0][i]>0 and block[1][i]>0:
                     if block[2][i]<0:
-                        final_score += (block[0][i]*block[1][i])/abs(block[2][i])
+                        final_score += out2*(block[0][i]*block[1][i])/abs(block[2][i])
                     else:
-                        final_score += (block[0][i]*block[1][i])
+                        final_score += out2*(block[0][i]*block[1][i])
                 if block[0][i]>0 and block[2][i]>0:
                     if block[1][i]<0:
-                        final_score += (block[0][i]*block[2][i])/abs(block[1][i])
+                        final_score += out2*(block[0][i]*block[2][i])/abs(block[1][i])
                     else:
-                        final_score += (block[0][i]*block[2][i])
+                        final_score += out2*(block[0][i]*block[2][i])
                 if block[1][i]>0 and block[2][i]>0:
                     if block[0][i]<0:
-                        final_score += (block[1][i]*block[2][i])/abs(block[0][i])
+                        final_score += out2*(block[1][i]*block[2][i])/abs(block[0][i])
                     else:
-                        final_score += (block[1][i]*block[2][i])
+                        final_score += out2*(block[1][i]*block[2][i])
                 if block[0][i]>0:
-                    final_score += block[0][i]
+                    final_score += out1*block[0][i]
                 if block[1][i]>0:
-                    final_score += block[1][i]
+                    final_score += out1*block[1][i]
                 if block[2][i]>0:
-                    final_score += block[2][i]
+                    final_score += out1*block[2][i]
             
             if (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
                 if block[0][i]<0 and block[1][i]<0 and block[2][i]<0:
-                    final_score -= abs(block[0][i]*block[1][i]*block[2][i])
+                    final_score -= out3op*abs(block[0][i]*block[1][i]*block[2][i])
                 if block[0][i]<0 and block[1][i]<0:
                     if block[1][i]>0:
-                        final_score -= abs(block[0][i]*block[1][i])/abs(block[2][i])
+                        final_score -= out2op*abs(block[0][i]*block[1][i])/abs(block[2][i])
                     else:
-                        final_score -= abs(block[0][i]*block[1][i])
+                        final_score -= out2op*abs(block[0][i]*block[1][i])
                 if block[0][i]<0 and block[2][i]<0:
                     if block[1][i]>0:
-                        final_score -= abs(block[0][i]*block[2][i])/abs(block[1][i])
+                        final_score -= out2op*abs(block[0][i]*block[2][i])/abs(block[1][i])
                     else:
-                        final_score -= abs(block[0][i]*block[2][i])
+                        final_score -= out2op*abs(block[0][i]*block[2][i])
                 if block[1][i]<0 and block[2][i]<0:
                     if block[0][i]>0:
-                        final_score -= abs(block[1][i]*block[2][i])/abs(block[0][i])
+                        final_score -= out2op*abs(block[1][i]*block[2][i])/abs(block[0][i])
                     else:
-                        final_score -= abs(block[1][i]*block[2][i])
+                        final_score -= out2op*abs(block[1][i]*block[2][i])
                 if block[0][i]<0:
-                    final_score -= abs(block[0][i])
+                    final_score -= out1op*abs(block[0][i])
                 if block[1][i]<0:
-                    final_score -= abs(block[1][i])
+                    final_score -= out1op*abs(block[1][i])
                 if block[2][i]<0:
-                    final_score -= abs(block[2][i])
+                    final_score -= out1op*abs(block[2][i])
 
         #DIAGONAL 1
 
         if (finished[0][0]==1 or finished[0][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[2][2]==1 or finished[2][2]==0):
             if block[0][0]>0 and block[1][1]>0 and block[2][2]>0:
-                final_score += block[0][0]*block[1][1]*block[2][2]
+                final_score += out3*block[0][0]*block[1][1]*block[2][2]
             if block[0][0]>0 and block[1][1]>0:
                 if block[2][2]<0:
-                    final_score += (block[0][0]*block[1][1])/abs(block[2][2])
+                    final_score += out2*(block[0][0]*block[1][1])/abs(block[2][2])
                 else:
-                    final_score += (block[0][0]*block[1][1])
+                    final_score += out2*(block[0][0]*block[1][1])
             if block[0][0]>0 and block[2][2]>0:
                 if block[1][1]<0:
-                    final_score += (block[0][0]*block[2][2])/abs(block[1][1])
+                    final_score += out2*(block[0][0]*block[2][2])/abs(block[1][1])
                 else:
-                    final_score += (block[0][0]*block[2][2])
+                    final_score += out2*(block[0][0]*block[2][2])
             if block[1][1]>0 and block[2][2]>0:
                 if block[0][0]<0:
-                    final_score += (block[1][1]*block[2][2])/abs(block[0][0])
+                    final_score += out2*(block[1][1]*block[2][2])/abs(block[0][0])
                 else:
-                    final_score += (block[1][1]*block[2][2])
+                    final_score += out2*(block[1][1]*block[2][2])
             if block[0][0]>0:
-                final_score += block[0][0]
+                final_score += out1*block[0][0]
             if block[1][1]>0:
-                final_score += block[1][1]
+                final_score += out1*block[1][1]
             if block[2][2]>0:
-                final_score += block[2][2]
+                final_score += out1*block[2][2]
 
         if (finished[0][0]==2 or finished[0][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[2][2]==2 or finished[2][2]==0):
             if block[0][0]<0 and block[1][1]<0 and block[2][2]<0:
-                final_score -= abs(block[0][0]*block[1][1]*block[2][2])
+                final_score -= out3op*abs(block[0][0]*block[1][1]*block[2][2])
             if block[0][0]<0 and block[1][1]<0:
                 if block[2][2]>0:
-                    final_score -= abs(block[0][0]*block[1][1])/abs(block[2][2])
+                    final_score -= out2op*abs(block[0][0]*block[1][1])/abs(block[2][2])
                 else:
-                    final_score -= abs(block[0][0]*block[1][1])
+                    final_score -= out2op*abs(block[0][0]*block[1][1])
             if block[0][0]<0 and block[2][2]<0:
                 if block[1][1]>0:
-                    final_score -= abs(block[0][0]*block[2][2])/abs(block[1][1])
+                    final_score -= out2op*abs(block[0][0]*block[2][2])/abs(block[1][1])
                 else:
-                    final_score -= abs(block[0][0]*block[2][2])
+                    final_score -= out2op*abs(block[0][0]*block[2][2])
             if block[1][1]<0 and block[2][2]<0:
                 if block[0][0]>0:
-                    final_score -= abs(block[1][1]*block[2][2])/abs(block[0][0])
+                    final_score -= out2op*abs(block[1][1]*block[2][2])/abs(block[0][0])
                 else:
-                    final_score -= abs(block[1][1]*block[2][2])
+                    final_score -= out2op*abs(block[1][1]*block[2][2])
             if block[0][0]<0:
-                final_score -= abs(block[0][0])
+                final_score -= out1op*abs(block[0][0])
             if block[1][1]<0:
-                final_score -= abs(block[1][1])
+                final_score -= out1op*abs(block[1][1])
             if block[2][2]<0:
-                final_score -= abs(block[2][2])
+                final_score -= out1op*abs(block[2][2])
         
         #DIAGONAL 2
 
         if (finished[2][0]==1 or finished[2][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[0][2]==1 or finished[0][2]==0):
             if block[2][0]>0 and block[1][1]>0 and block[0][2]>0:
-                final_score += block[2][0]*block[1][1]*block[0][2]
+                final_score += out3*block[2][0]*block[1][1]*block[0][2]
             if block[2][0]>0 and block[1][1]>0:
                 if block[0][2]<0:
-                    final_score += (block[2][0]*block[1][1])/abs(block[0][2])
+                    final_score += out2*(block[2][0]*block[1][1])/abs(block[0][2])
                 else:
-                    final_score += (block[2][0]*block[1][1])
+                    final_score += out2*(block[2][0]*block[1][1])
             if block[2][0]>0 and block[0][2]>0:
                 if block[1][1]<0:
-                    final_score += (block[2][0]*block[0][2])/abs(block[1][1])
+                    final_score += out2*(block[2][0]*block[0][2])/abs(block[1][1])
                 else:
-                    final_score += (block[2][0]*block[0][2])
+                    final_score += out2*(block[2][0]*block[0][2])
             if block[1][1]>0 and block[0][2]>0:
                 if block[2][0]<0:
-                    final_score += (block[1][1]*block[0][2])/abs(block[2][0])
+                    final_score += out2*(block[1][1]*block[0][2])/abs(block[2][0])
                 else:
-                    final_score += (block[1][1]*block[0][2])
+                    final_score += out2*(block[1][1]*block[0][2])
             if block[2][0]>0:
-                final_score += block[2][0]
+                final_score += out1*block[2][0]
             if block[1][1]>0:
-                final_score += block[1][1]
+                final_score += out1*block[1][1]
             if block[0][2]>0:
-                final_score += block[0][2]
+                final_score += out1*block[0][2]
 
         if (finished[2][0]==2 or finished[2][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[0][2]==2 or finished[0][2]==0):
             if block[2][0]<0 and block[1][1]<0 and block[0][2]<0:
-                final_score -= abs(block[2][0]*block[1][1]*block[0][2])
+                final_score -= out3op*abs(block[2][0]*block[1][1]*block[0][2])
             if block[2][0]<0 and block[1][1]<0:
                 if block[0][2]>0:
-                    final_score -= abs(block[2][0]*block[1][1])/abs(block[0][2])
+                    final_score -= out2op*abs(block[2][0]*block[1][1])/abs(block[0][2])
                 else:
-                    final_score -= abs(block[2][0]*block[1][1])
+                    final_score -= out2op*abs(block[2][0]*block[1][1])
             if block[2][0]<0 and block[0][2]<0:
                 if block[1][1]>0:
-                    final_score -= abs(block[2][0]*block[0][2])/abs(block[1][1])
+                    final_score -= out2op*abs(block[2][0]*block[0][2])/abs(block[1][1])
                 else:
-                    final_score -= abs(block[2][0]*block[0][2])
+                    final_score -= out2op*abs(block[2][0]*block[0][2])
             if block[1][1]<0 and block[0][2]<0:
                 if block[2][0]>0:
-                    final_score -= abs(block[1][1]*block[0][2])/abs(block[2][0])
+                    final_score -= out2op*abs(block[1][1]*block[0][2])/abs(block[2][0])
                 else:
-                    final_score -= abs(block[1][1]*block[0][2])
+                    final_score -= out2op*abs(block[1][1]*block[0][2])
             if block[2][0]<0:
-                final_score -= abs(block[2][0])
+                final_score -= out1op*abs(block[2][0])
             if block[1][1]<0:
-                final_score -= abs(block[1][1])
+                final_score -= out1op*abs(block[1][1])
             if block[0][2]<0:
-                final_score -= abs(block[0][2])
+                final_score -= out1op*abs(block[0][2])
 
-        final_score = final_score * ((85-depth)/depth) * ((85-depth)/depth)
+        final_score = final_score * ((85-depth)/depth)
         return final_score
 
     def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth):

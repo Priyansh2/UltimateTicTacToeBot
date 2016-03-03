@@ -17,6 +17,7 @@ import sys
 import random
 import signal
 import time
+import team53
 from team76 import Player76
 from team76old import Player76old
 from old45 import Player45
@@ -48,7 +49,7 @@ class Player1:
 	
 	def __init__(self):
 		# You may initialize your object here and use any variables for storing throughout the game
-		self.obj1 = Player36()
+		self.obj1 = Player5()
 
 	def move(self,temp_board,temp_block,old_move,flag):
 		#List of permitted blocks, based on old move.
@@ -56,7 +57,6 @@ class Player1:
 		#Get list of empty valid cells
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
-                #obj1 = Player36()
                 mvp = self.obj1.move(temp_board,temp_block,old_move,flag)
                 return (int(mvp[0]), int(mvp[1]))
 
@@ -72,10 +72,8 @@ class Player2:
 		#Get list of empty valid cells
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
-                #obj1 = Player76()
                 mvp = self.obj1.move(temp_board,temp_block,old_move,flag)
                 print 'This is the new me',flag
-                print mvp
                 return (int(mvp[0]), int(mvp[1]))
 
 def determine_blocks_allowed(old_move, block_stat):
