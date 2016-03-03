@@ -71,12 +71,13 @@ class Player76old:
         in1op = 3
         in2op = 30
         in3op = 300
-        out1 = 100
-        out2 = 10
+        out1 = 1
+        out2 = 1
         out3 = 1
-        out1op = 100
-        out2op = 10
+        out1op = 1
+        out2op = 1
         out3op = 1
+        final_score = 0.0
         if self.board_win(flag,game):
             return self.INF * ((85-depth)/depth) * ((85-depth)/depth)
         elif self.board_win(('x' if flag == 'o' else 'o'),game):
@@ -84,13 +85,15 @@ class Player76old:
         block = [[0,0,0],[0,0,0],[0,0,0]]
         finished = [[0,0,0],[0,0,0],[0,0,0]]
         for i in range(0,3):
-        	for j in range(0,3):
-        		if self.block_win(flag,game,i,j):
-        			finished[i][j]=1
-        		elif self.block_win(('x' if flag == 'o' else 'o'),game,i,j):
-        			finished[i][j]=2
-        		elif self.completed_block(game,i,j):
-        			finished[i][j]=3
+            for j in range(0,3):
+                if self.block_win(flag,game,i,j):
+                    finished[i][j]=1
+                    #final_score += 1000*1000*1000/500
+                elif self.block_win(('x' if flag == 'o' else 'o'),game,i,j):
+                    finished[i][j]=2
+                    #final_score -= 1000*1000*1000/500
+                elif self.completed_block(game,i,j):
+                    finished[i][j]=3
         flagop = ('x' if flag == 'o' else 'o')
         for i in range(0,3):
             for j in range(0,3):
@@ -231,7 +234,6 @@ class Player76old:
 
         #print block
 
-        final_score = 0.0
         for i in range(0,3):
             if (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0) and (finished[i][2]==1 or finished[i][2]==0):
                 if block[i][0]>0 and block[i][1]>0 and block[i][2]>0:
