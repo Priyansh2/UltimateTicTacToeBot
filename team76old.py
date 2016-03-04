@@ -63,32 +63,30 @@ class Player76old:
         return 1
 
     #HEURISTIC - DOESNT WORK WELL!
-    def assumedScore(self,game,depth,player,flag):
+    def assumedScore(self,game,depth,player,flag,in1,in2,in3):
         depth = min(depth, 85)
-        in1 = 1
-        in2 = 10
-        in3 = 100
+        #in1 = 1
+        #in2 = 5
+        #in3 = 500
         in1op = in1
         in2op = in2
         in3op = in3
-        out1 = 1
-        out2 = 10
-        out3 = 100
         final_score = 0.0
         if self.board_win(flag,game):
             return self.INF * (1.0/depth)
         elif self.board_win(('x' if flag == 'o' else 'o'),game):
             return -self.INF * (1.0/depth)
         block = [[0,0,0],[0,0,0],[0,0,0]]
+        block2 = [[0,0,0],[0,0,0],[0,0,0]]
         finished = [[0,0,0],[0,0,0],[0,0,0]]
         for i in range(0,3):
             for j in range(0,3):
                 if self.block_win(flag,game,i,j):
                     finished[i][j]=1
-                    #final_score += 1000*1000*1000/500
+                    final_score += 12
                 elif self.block_win(('x' if flag == 'o' else 'o'),game,i,j):
                     finished[i][j]=2
-                    #final_score -= 1000*1000*1000/500
+                    final_score -= 12
                 elif self.completed_block(game,i,j):
                     finished[i][j]=3
         flagop = ('x' if flag == 'o' else 'o')
@@ -113,7 +111,8 @@ class Player76old:
                             captured += in2
                         if game[br+ii][bc+0]==flag and game[br+ii][bc+1]==flag and game[br+ii][bc+2]==flag:
                             captured += in3
-                    if (game[br+ii][bc+0]==flagop or game[br+ii][bc+0]=='-') and (game[br+ii][bc+1]==flagop or game[br+ii][bc+1]=='-') and (game[br+ii][bc+2]==flagop or game[br+ii][bc+2]=='-'):
+
+                    elif (game[br+ii][bc+0]==flagop or game[br+ii][bc+0]=='-') and (game[br+ii][bc+1]==flagop or game[br+ii][bc+1]=='-') and (game[br+ii][bc+2]==flagop or game[br+ii][bc+2]=='-'):
                         if game[br+ii][bc+0]==flagop:
                             captured -= in1op
                         if game[br+ii][bc+1]==flagop:
@@ -193,7 +192,7 @@ class Player76old:
                         captured -= in2op
                     if game[br+0][bc+0]==flagop and game[br+1][bc+1]==flagop and game[br+2][bc+2]==flagop:
                         captured -= in3op
-                
+
                 #DIAGONAL 2
                 if (game[br+2][bc+0]==flag or game[br+2][bc+0]=='-') and (game[br+1][bc+1]==flag or game[br+1][bc+1]=='-') and (game[br+0][bc+2]==flag or game[br+0][bc+2]=='-'):
                     if game[br+2][bc+0]==flag:
@@ -227,203 +226,55 @@ class Player76old:
                     if game[br+2][bc+0]==flagop and game[br+1][bc+1]==flagop and game[br+0][bc+2]==flagop:
                         captured -= in3op
 
-                if captured>0:
-                    block[i][j] = min(in3,captured)
-                else:
-                    block[i][j] = max(-in3,captured)
-                block[i][j]*=(1.0/in3)
+                max_val = 24*in1 + 24*in2 + 8*in3
+                block[i][j]=(captured)*1.0/max_val + 1.0
 
-        #print block
+        '''for iii in range(0,3):
+            for jjj in range(0,3):
+                print block[iii][jjj],
+            print ''
+        '''
 
+        out1 = 1
+        out2 = 1
+        out3 = 1
+        final_score = 0.0
         for i in range(0,3):
-            if (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0) and (finished[i][2]==1 or finished[i][2]==0):
-                cur_val = block[i][0]+block[i][1]+block[i][2]
-                if cur_val >= 0:
-                    if cur_val >= 3.0:
-                        final_score += out3
-                    elif cur_val >= 2.0:
-                        final_score += out2 + (cur_val-2.0)*(out3-out2)
-                    elif cur_val >= 1.0:
-                        final_score += out1 + (cur_val-1.0)*(out2-out1)
-                    else:
-                        final_score += cur_val*out1
-                else:
-                    cur_val = abs(cur_val)
-                    if cur_val >= 3.0:
-                        final_score -= out3
-                    elif cur_val >= 2.0:
-                        final_score -= out2 + (cur_val-2.0)*(out3-out2)
-                    elif cur_val >= 1.0:
-                        final_score -= out1 + (cur_val-1.0)*(out2-out1)
-                    else:
-                        final_score -= cur_val*out1
+            #if (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0) and (finished[i][2]==1 or finished[i][2]==0):
+            final_score += out3*(block[i][0]*block[i][1]*block[i][2])
 
-            elif (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
-                cur_val = block[i][0]+block[i][1]+block[i][2]
-                if cur_val >= 0:
-                    if cur_val >= 3.0:
-                        final_score += out3
-                    elif cur_val >= 2.0:
-                        final_score += out2 + (cur_val-2.0)*(out3-out2)
-                    elif cur_val >= 1.0:
-                        final_score += out1 + (cur_val-1.0)*(out2-out1)
-                    else:
-                        final_score += cur_val*out1
-                else:
-                    cur_val = abs(cur_val)
-                    if cur_val >= 3.0:
-                        final_score -= out3
-                    elif cur_val >= 2.0:
-                        final_score -= out2 + (cur_val-2.0)*(out3-out2)
-                    elif cur_val >= 1.0:
-                        final_score -= out1 + (cur_val-1.0)*(out2-out1)
-                    else:
-                        final_score -= cur_val*out1
+            #elif (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
+            #    final_score += out3*(block[i][0]*block[i][1]*block[i][2])
 
-            if (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
-                cur_val = block[0][i]+block[1][i]+block[2][i]
-                if cur_val >= 0:
-                    if cur_val >= 3.0:
-                        final_score += out3
-                    elif cur_val >= 2.0:
-                        final_score += out2 + (cur_val-2.0)*(out3-out2)
-                    elif cur_val >= 1.0:
-                        final_score += out1 + (cur_val-1.0)*(out2-out1)
-                    else:
-                        final_score += cur_val*out1
-                else:
-                    cur_val = abs(cur_val)
-                    if cur_val >= 3.0:
-                        final_score -= out3
-                    elif cur_val >= 2.0:
-                        final_score -= out2 + (cur_val-2.0)*(out3-out2)
-                    elif cur_val >= 1.0:
-                        final_score -= out1 + (cur_val-1.0)*(out2-out1)
-                    else:
-                        final_score -= cur_val*out1
+            #if (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
+            final_score += out3*(block[0][i]*block[1][i]*block[2][i])
             
-            elif (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
-                cur_val = block[0][i]+block[1][i]+block[2][i]
-                if cur_val >= 0:
-                    if cur_val >= 3.0:
-                        final_score += out3
-                    elif cur_val >= 2.0:
-                        final_score += out2 + (cur_val-2.0)*(out3-out2)
-                    elif cur_val >= 1.0:
-                        final_score += out1 + (cur_val-1.0)*(out2-out1)
-                    else:
-                        final_score += cur_val*out1
-                else:
-                    cur_val = abs(cur_val)
-                    if cur_val >= 3.0:
-                        final_score -= out3
-                    elif cur_val >= 2.0:
-                        final_score -= out2 + (cur_val-2.0)*(out3-out2)
-                    elif cur_val >= 1.0:
-                        final_score -= out1 + (cur_val-1.0)*(out2-out1)
-                    else:
-                        final_score -= cur_val*out1
-
+            #elif (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
+            #    final_score += out3*(block[0][i]*block[1][i]*block[2][i])
         #DIAGONAL 1
 
-        if (finished[0][0]==1 or finished[0][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[2][2]==1 or finished[2][2]==0):
-            cur_val = block[0][0]+block[1][1]+block[2][2]
-            if cur_val >= 0:
-                if cur_val >= 3.0:
-                    final_score += out3
-                elif cur_val >= 2.0:
-                    final_score += out2 + (cur_val-2.0)*(out3-out2)
-                elif cur_val >= 1.0:
-                    final_score += out1 + (cur_val-1.0)*(out2-out1)
-                else:
-                    final_score += cur_val*out1
-            else:
-                cur_val = abs(cur_val)
-                if cur_val >= 3.0:
-                    final_score -= out3
-                elif cur_val >= 2.0:
-                    final_score -= out2 + (cur_val-2.0)*(out3-out2)
-                elif cur_val >= 1.0:
-                    final_score -= out1 + (cur_val-1.0)*(out2-out1)
-                else:
-                    final_score -= cur_val*out1
+        #if (finished[0][0]==1 or finished[0][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[2][2]==1 or finished[2][2]==0):
+        final_score += out3*(block[0][0]*block[1][1]*block[2][2])
 
-        elif (finished[0][0]==2 or finished[0][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[2][2]==2 or finished[2][2]==0):
-            cur_val = block[0][0]+block[1][1]+block[2][2]
-            if cur_val >= 0:
-                if cur_val >= 3.0:
-                    final_score += out3
-                elif cur_val >= 2.0:
-                    final_score += out2 + (cur_val-2.0)*(out3-out2)
-                elif cur_val >= 1.0:
-                    final_score += out1 + (cur_val-1.0)*(out2-out1)
-                else:
-                    final_score += cur_val*out1
-            else:
-                cur_val = abs(cur_val)
-                if cur_val >= 3.0:
-                    final_score -= out3
-                elif cur_val >= 2.0:
-                    final_score -= out2 + (cur_val-2.0)*(out3-out2)
-                elif cur_val >= 1.0:
-                    final_score -= out1 + (cur_val-1.0)*(out2-out1)
-                else:
-                    final_score -= cur_val*out1     
+        #elif (finished[0][0]==2 or finished[0][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[2][2]==2 or finished[2][2]==0):
+        #    final_score += out3*(block[0][0]*block[1][1]*block[2][2])
+        
         #DIAGONAL 2
 
-        if (finished[2][0]==1 or finished[2][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[0][2]==1 or finished[0][2]==0):
-            cur_val = block[2][0]+block[1][1]+block[0][2]
-            if cur_val >= 0:
-                if cur_val >= 3.0:
-                    final_score += out3
-                elif cur_val >= 2.0:
-                    final_score += out2 + (cur_val-2.0)*(out3-out2)
-                elif cur_val >= 1.0:
-                    final_score += out1 + (cur_val-1.0)*(out2-out1)
-                else:
-                    final_score += cur_val*out1
-            else:
-                cur_val = abs(cur_val)
-                if cur_val >= 3.0:
-                    final_score -= out3
-                elif cur_val >= 2.0:
-                    final_score -= out2 + (cur_val-2.0)*(out3-out2)
-                elif cur_val >= 1.0:
-                    final_score -= out1 + (cur_val-1.0)*(out2-out1)
-                else:
-                    final_score -= cur_val*out1
+        #if (finished[2][0]==1 or finished[2][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[0][2]==1 or finished[0][2]==0):
+        final_score += out3*(block[2][0]*block[1][1]*block[0][2])
 
-        elif (finished[2][0]==2 or finished[2][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[0][2]==2 or finished[0][2]==0):
-            cur_val = block[2][0]+block[1][1]+block[0][2]
-            if cur_val >= 0:
-                if cur_val >= 3.0:
-                    final_score += out3
-                elif cur_val >= 2.0:
-                    final_score += out2 + (cur_val-2.0)*(out3-out2)
-                elif cur_val >= 1.0:
-                    final_score += out1 + (cur_val-1.0)*(out2-out1)
-                else:
-                    final_score += cur_val*out1
-            else:
-                cur_val = abs(cur_val)
-                if cur_val >= 3.0:
-                    final_score -= out3
-                elif cur_val >= 2.0:
-                    final_score -= out2 + (cur_val-2.0)*(out3-out2)
-                elif cur_val >= 1.0:
-                    final_score -= out1 + (cur_val-1.0)*(out2-out1)
-                else:
-                    final_score -= cur_val*out1
-                    
-        #print block
-        final_score = final_score * (1.0/depth)
+        #elif (finished[2][0]==2 or finished[2][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[0][2]==2 or finished[0][2]==0):
+        #    final_score += out3*(block[2][0]*block[1][1]*block[0][2])
+
+        final_score = final_score * (10.0/depth)
         return final_score
 
-    def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth):
+    def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth,in1,in2,in3):
 
     	maxdepth = min(maxdepth,85-depth)
 
-        #print self.assumedScore(game,depth,player,flag)
+        #print self.assumedScore(game,depth,player,flag,in1,in2,in3))
     	#return (0,0)
 
     	state_string = self.getStateString(game)
@@ -432,7 +283,7 @@ class Player76old:
 
         if time.clock() - self.t0 >=9 and firstcall != 0:
             self.complete = False
-            return self.assumedScore(game,depth,player,flag)
+            return self.assumedScore(game,depth,player,flag,in1,in2,in3)
 
         if alpha>=beta:
             if player==flag:
@@ -443,7 +294,7 @@ class Player76old:
                 return -1000*self.INF
         #The game is complete (All blocks filled) or if there is a winner of the game, then return the heruistic based cost function values
         if self.board_win('o',game) or self.board_win('x',game) or self.completed_board(game) or depth>=maxdepth: 
-            return self.assumedScore(game,depth,player,flag)
+            return self.assumedScore(game,depth,player,flag,in1,in2,in3)
 
         scores = []
         moves = []
@@ -525,11 +376,11 @@ class Player76old:
                 if copy[i][j]=='-' and available[i/3][j/3]==1:
                     copy[i][j]=player
                     if player==flag:
-                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth, in1, in2, in3)
                         scores.append(cur_score)
                         alphatemp = max(alphatemp, cur_score)
                     else:
-                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth)
+                        cur_score = self.minimax(('x' if player == 'o' else 'o'),copy,1,depth+1,alphatemp,betatemp,(i%3)*3+j%3,flag,maxdepth, in1, in2, in3)
                         scores.append(cur_score)
                         betatemp = min(betatemp, cur_score)
                     copy[i][j]='-'
@@ -572,7 +423,7 @@ class Player76old:
     				ret_string += '0'
     	return ret_string
 
-    def move(self, temp_board, temp_block, old_move, flag):
+    def move(self, temp_board, temp_block, old_move, flag, in1, in2, in3):
         self.__init__()
         self.t0 = time.clock()
         previous_move_r, previous_move_c = old_move[0], old_move[1]
@@ -581,13 +432,13 @@ class Player76old:
     	else:
     	    selected_block = ((previous_move_c)%3+((previous_move_r)%3)*3) #x is the column y is the row
         self.complete = True
-        answer = self.minimax(flag,temp_board,0,1,-self.INF,self.INF,selected_block,flag,4)
+        answer = self.minimax(flag,temp_board,0,1,-self.INF,self.INF,selected_block,flag,5, in1, in2, in3)
         t1 = time.clock()
         return answer
         max_depth = 5
         while t1-self.t0 <= 8:
             self.complete = True
-            answer1 = self.minimax(flag,temp_board,0,1,-self.INF,self.INF,selected_block,flag,max_depth)
+            answer1 = self.minimax(flag,temp_board,0,1,-self.INF,self.INF,selected_block,flag,max_depth, in1, in2, in3)
             if self.complete == True:
                 answer = answer1
                 max_depth += 1

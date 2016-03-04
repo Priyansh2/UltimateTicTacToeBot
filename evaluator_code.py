@@ -27,6 +27,12 @@ from team4 import Player4
 from team80 import Player80
 from team3 import Player3
 
+running_against = 0
+current_me = 0
+used_f1=0
+used_f2=0
+used_f3=0
+
 def handler(signum, frame):
     #print 'Signal handler called with signal', signum
     raise TimedOutExc()
@@ -47,9 +53,24 @@ class ManualPlayer:
 
 class Player1:
 	
-	def __init__(self):
+	def __init__(self,playerno):
 		# You may initialize your object here and use any variables for storing throughout the game
-		self.obj1 = Player45()
+		if playerno == 0:
+			self.obj1 = Player36()
+		if playerno == 1:
+			self.obj1 = Player4()
+		if playerno == 2:
+			self.obj1 = Player5()
+		if playerno == 3:
+			self.obj1 = team53.Player2()
+		if playerno == 4:
+			self.obj1 = Player45()
+		if playerno == 5:
+			self.obj1 = Player76old()
+		if playerno == 6:
+			self.obj1 = Player80()
+		if playerno == 7:
+			self.obj1 = Player3()
 
 	def move(self,temp_board,temp_block,old_move,flag):
 		#List of permitted blocks, based on old move.
@@ -57,14 +78,17 @@ class Player1:
 		#Get list of empty valid cells
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
-                mvp = self.obj1.move(temp_board,temp_block,old_move,flag)
-                return (int(mvp[0]), int(mvp[1]))
+		mvp = self.obj1.move(temp_board,temp_block,old_move,flag)
+		return (int(mvp[0]), int(mvp[1]))
 
 class Player2:
 	
-	def __init__(self):
+	def __init__(self,in1,in2,in3):
 		# You may initialize your object here and use any variables for storing throughout the game
                 self.obj1 = Player76old()
+                self.in1 = in1
+                self.in2 = in2
+                self.in3 = in3
 
 	def move(self,temp_board,temp_block,old_move,flag):
 		#List of permitted blocks, based on old move.
@@ -72,9 +96,10 @@ class Player2:
 		#Get list of empty valid cells
 		cells = get_empty_out_of(temp_board, blocks_allowed,temp_block)
 		#Choose a move based on some algorithm, here it is a random move.
-                mvp = self.obj1.move(temp_board,temp_block,old_move,flag)
-                print 'This is the new me',flag
-                return (int(mvp[0]), int(mvp[1]))
+		print running_against,'    f value 1',used_f1,'    f value 2',used_f2,'    f value 3',used_f3
+		mvp = self.obj1.move(temp_board,temp_block,old_move,flag,self.in1,self.in2,self.in3)
+		print 'This is the new me',flag
+		return (int(mvp[0]), int(mvp[1]))
 
 def determine_blocks_allowed(old_move, block_stat):
 	blocks_allowed = []
@@ -254,19 +279,52 @@ def terminal_state_reached(game_board, block_stat,point1,point2):
 
 
 def decide_winner_and_get_message(player,status, message):
+	f = open('resultsfinal.txt',"a")
 	if status == 'P1':
+		if current_me == 1:
+			f.write(str(running_against)+'  =>  '+'Win =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		else:
+			f.write(str(running_against)+'  =>  '+'Lose =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		f.close()
 		return ('P1', 'MORE BLOCKS')
 	elif status == 'P2':
+		if current_me == 1:
+			f.write(str(running_against)+'  =>  '+'Lose =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		else:
+			f.write(str(running_against)+'  =>  '+'Win =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		f.close()
 		return ('P2', 'MORE BLOCKS')
 	elif player == 'P1' and status == 'L':
+		if current_me == 1:
+			f.write(str(running_against)+'  =>  '+'Win =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		else:
+			f.write(str(running_against)+'  =>  '+'Lose =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		f.close()
 		return ('P2',message)
 	elif player == 'P1' and status == 'W':
+		if current_me == 1:
+			f.write(str(running_against)+'  =>  '+'Win =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		else:
+			f.write(str(running_against)+'  =>  '+'Lose =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		f.close()
 		return ('P1',message)
 	elif player == 'P2' and status == 'L':
+		if current_me == 1:
+			f.write(str(running_against)+'  =>  '+'Lose =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		else:
+			f.write(str(running_against)+'  =>  '+'Win =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		f.close()
 		return ('P1',message)
 	elif player == 'P2' and status == 'W':
+		if current_me == 1:
+			f.write(str(running_against)+'  =>  '+'Lose =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		else:
+			f.write(str(running_against)+'  =>  '+'Win =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		f.close()
 		return ('P2',message)
 	else:
+		f.write(str(running_against)+'  =>  '+'Draw =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
+		f.close()
 		return ('NONE','DRAW')
 	return
 
@@ -409,25 +467,39 @@ if __name__ == '__main__':
  
 	obj1 = ''
 	obj2 = ''
-	option = sys.argv[1]	
-	if option == '1':
-		obj1 = Player1()
-		obj2 = Player2()
+	option = sys.argv[1]
 
-	elif option == '2':
-		obj1 = Player1()
-		obj2 = ManualPlayer()
-	elif option == '3':
-		obj1 = ManualPlayer()
-		obj2 = ManualPlayer()
-	else:
-		print 'Invalid option'
-		sys.exit(1)
 
-	num = random.randint(0,10)
-	if num >= 5:
-		simulate(obj2, obj1)
-	else:
-		simulate(obj1, obj2)
+	for in1 in range(1,4,1):
+		for in2 in range(14,21,3):
+			for in3 in range(150,250,50):
+				used_f1 = in1
+				used_f2 = in2
+				used_f3 = in3
+
+				for playerno in range(0,8):
+                                        try:
+						running_against = playerno
+                                                
+						if option == '1':
+							obj1 = Player1(playerno)
+							obj2 = Player2(in1,in2,in3)
+                                                
+						elif option == '2':
+							obj1 = Player1()
+							obj2 = ManualPlayer()
+						elif option == '3':
+							obj1 = ManualPlayer()
+							obj2 = ManualPlayer()
+						else:
+							print 'Invalid option'
+							sys.exit(1)
+                                                
+						current_me = 1
+						simulate(obj2, obj1)
+						current_me = 2
+						simulate(obj1, obj2)
+                                        except:
+                                                continue
 		
 	
