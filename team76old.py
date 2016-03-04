@@ -73,9 +73,9 @@ class Player76old:
         in3op = in3
         final_score = 0.0
         if self.board_win(flag,game):
-            return self.INF * (1.0/depth)
+            return self.INF * ((1.0/depth)**(1.0/3.0))
         elif self.board_win(('x' if flag == 'o' else 'o'),game):
-            return -self.INF * (1.0/depth)
+            return -self.INF * ((1.0/depth)**(1.0/3.0))
         block = [[0,0,0],[0,0,0],[0,0,0]]
         block2 = [[0,0,0],[0,0,0],[0,0,0]]
         finished = [[0,0,0],[0,0,0],[0,0,0]]
@@ -227,7 +227,7 @@ class Player76old:
                         captured -= in3op
 
                 max_val = 24*in1 + 24*in2 + 8*in3
-                block[i][j]=(captured)*1.0/max_val + 1.0
+                block[i][j]=(captured*((1.0/depth)**(1.0/3.0)))*1.0/max_val + 1.0
 
         '''for iii in range(0,3):
             for jjj in range(0,3):
@@ -240,34 +240,41 @@ class Player76old:
         out3 = 1
         final_score = 0.0
         for i in range(0,3):
-            #if (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0) and (finished[i][2]==1 or finished[i][2]==0):
-            final_score += out3*(block[i][0]*block[i][1]*block[i][2])
+            if (finished[i][0]==1 or finished[i][0]==0) and (finished[i][1]==1 or finished[i][1]==0) and (finished[i][2]==1 or finished[i][2]==0):
+            	final_score += out3*(block[i][0]*block[i][1]*block[i][2])
 
-            #elif (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
-            #    final_score += out3*(block[i][0]*block[i][1]*block[i][2])
+            elif (finished[i][0]==2 or finished[i][0]==0) and (finished[i][1]==2 or finished[i][1]==0)and (finished[i][2]==2 or finished[i][2]==0):
+                final_score += out3*(block[i][0]*block[i][1]*block[i][2])
+            else:
+                final_score += out3*(1.0)
 
-            #if (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
-            final_score += out3*(block[0][i]*block[1][i]*block[2][i])
+            if (finished[0][i]==1 or finished[0][i]==0) and (finished[1][i]==1 or finished[1][i]==0)and (finished[2][i]==1 or finished[2][i]==0):
+            	final_score += out3*(block[0][i]*block[1][i]*block[2][i])
             
-            #elif (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
-            #    final_score += out3*(block[0][i]*block[1][i]*block[2][i])
+            elif (finished[0][i]==2 or finished[0][i]==0) and (finished[1][i]==2 or finished[1][i]==0)and (finished[2][i]==2 or finished[2][i]==0):
+                final_score += out3*(block[0][i]*block[1][i]*block[2][i])
+            else:
+                final_score += out3*(1.0)
         #DIAGONAL 1
 
-        #if (finished[0][0]==1 or finished[0][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[2][2]==1 or finished[2][2]==0):
-        final_score += out3*(block[0][0]*block[1][1]*block[2][2])
+        if (finished[0][0]==1 or finished[0][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[2][2]==1 or finished[2][2]==0):
+       	    final_score += out3*(block[0][0]*block[1][1]*block[2][2])
 
-        #elif (finished[0][0]==2 or finished[0][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[2][2]==2 or finished[2][2]==0):
-        #    final_score += out3*(block[0][0]*block[1][1]*block[2][2])
+        elif (finished[0][0]==2 or finished[0][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[2][2]==2 or finished[2][2]==0):
+            final_score += out3*(block[0][0]*block[1][1]*block[2][2])
+        else:
+            final_score += out3*(1.0)
         
         #DIAGONAL 2
 
-        #if (finished[2][0]==1 or finished[2][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[0][2]==1 or finished[0][2]==0):
-        final_score += out3*(block[2][0]*block[1][1]*block[0][2])
+        if (finished[2][0]==1 or finished[2][0]==0) and (finished[1][1]==1 or finished[1][1]==0) and (finished[0][2]==1 or finished[0][2]==0):
+            final_score += out3*(block[2][0]*block[1][1]*block[0][2])
 
-        #elif (finished[2][0]==2 or finished[2][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[0][2]==2 or finished[0][2]==0):
-        #    final_score += out3*(block[2][0]*block[1][1]*block[0][2])
+        elif (finished[2][0]==2 or finished[2][0]==0) and (finished[1][1]==2 or finished[1][1]==0)and (finished[0][2]==2 or finished[0][2]==0):
+            final_score += out3*(block[2][0]*block[1][1]*block[0][2])
+        else:
+            final_score += out3*(1.0)
 
-        final_score = final_score * (10.0/depth)
         return final_score
 
     def minimax(self,player,game,firstcall,depth,alpha,beta,selected_block,flag,maxdepth,in1,in2,in3):

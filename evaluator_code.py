@@ -279,7 +279,7 @@ def terminal_state_reached(game_board, block_stat,point1,point2):
 
 
 def decide_winner_and_get_message(player,status, message):
-	f = open('resultsfinal.txt',"a")
+	f = open('vishalmain.txt',"a")
 	if status == 'P1':
 		if current_me == 1:
 			f.write(str(running_against)+'  =>  '+'Win =>'+str(used_f1)+'=>'+str(used_f2)+'=>'+str(used_f3)+'\n')
@@ -471,8 +471,8 @@ if __name__ == '__main__':
 
 
 	for in1 in range(1,4,1):
-		for in2 in range(14,21,3):
-			for in3 in range(150,250,50):
+		for in2 in range(8,21,3):
+			for in3 in range(50,250,50):
 				used_f1 = in1
 				used_f2 = in2
 				used_f3 = in3
